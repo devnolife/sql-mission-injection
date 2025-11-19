@@ -3,28 +3,28 @@ export const lessons = [
   {
     id: 1,
     type: 'concept',
-    title: "The Data Matrix",
-    section: "Fundamentals",
-    description: "Understanding what a Database is.",
-    content: "In the digital realm, information is power. But raw data is chaos. To control it, we use DATABASES.\n\nThink of a database like a massive, secure warehouse. Inside, data isn't just thrown in a pile; it's organized into TABLES. A table is like a spreadsheet: rows are individual records (like a specific user), and columns are the attributes (like name, age, job).\n\nSQL (Structured Query Language) is the key to this warehouse. It's the language we use to ask the database questions, or 'Queries'. With SQL, we can retrieve, filter, sort, and manipulate data with surgical precision.",
+    title: "Matriks Data",
+    section: "Dasar-Dasar",
+    description: "Memahami apa itu Database.",
+    content: "Di dunia digital, informasi adalah kekuatan. Tapi data mentah adalah kekacauan. Untuk mengendalikannya, kita menggunakan DATABASE.\n\nBayangkan database seperti gudang besar yang aman. Di dalamnya, data tidak hanya ditumpuk; itu diatur ke dalam TABEL. Tabel itu seperti spreadsheet: baris adalah catatan individu (seperti pengguna tertentu), dan kolom adalah atribut (seperti nama, usia, pekerjaan).\n\nSQL (Structured Query Language) adalah kunci gudang ini. Ini adalah bahasa yang kita gunakan untuk mengajukan pertanyaan ke database, atau 'Queries'. Dengan SQL, kita dapat mengambil, memfilter, mengurutkan, dan memanipulasi data dengan presisi bedah.",
     points: 5
   },
   {
     id: 2,
     type: 'concept',
-    title: "Origins of the Code",
-    section: "Fundamentals",
-    description: "A brief history of SQL.",
-    content: "In the early 1970s, at IBM's San Jose Research Laboratory, a new relational model for data was born. Two researchers, Donald Chamberlin and Raymond Boyce, developed a language called SEQUEL (Structured English Query Language).\n\nLater shortened to SQL (due to trademark issues), it became the standard for communicating with relational databases. Today, whether it's a bank, a social network, or a secret government server, SQL is the language that runs the world.",
+    title: "Asal Usul Kode",
+    section: "Dasar-Dasar",
+    description: "Sejarah singkat SQL.",
+    content: "Pada awal 1970-an, di Laboratorium Riset IBM San Jose, model relasional baru untuk data lahir. Dua peneliti, Donald Chamberlin dan Raymond Boyce, mengembangkan bahasa yang disebut SEQUEL (Structured English Query Language).\n\nKemudian disingkat menjadi SQL (karena masalah merek dagang), itu menjadi standar untuk berkomunikasi dengan database relasional. Hari ini, baik itu bank, jejaring sosial, atau server pemerintah rahasia, SQL adalah bahasa yang menjalankan dunia.",
     points: 5
   },
   {
     id: 3,
     type: 'quiz',
-    title: "Protocol Check: SQL",
-    section: "Fundamentals",
-    description: "Verify your understanding of SQL basics.",
-    question: "What does SQL stand for?",
+    title: "Cek Protokol: SQL",
+    section: "Dasar-Dasar",
+    description: "Verifikasi pemahaman Anda tentang dasar-dasar SQL.",
+    question: "Apa kepanjangan dari SQL?",
     options: [
       "Structured Question List",
       "Structured Query Language",
@@ -34,63 +34,120 @@ export const lessons = [
     correctAnswer: 1,
     points: 10
   },
+  {
+    id: 4,
+    type: 'concept',
+    title: "Database Relasional",
+    section: "Dasar-Dasar",
+    description: "Memahami konsep database relasional dan terminologi kunci.",
+    content: "DATABASE RELASIONAL adalah sistem yang menyimpan data dalam tabel-tabel yang saling terhubung melalui relasi. Contoh: sistem perbankan yang menghubungkan tabel 'Nasabah' dengan tabel 'Rekening' dan 'Transaksi'.\n\nTERMINOLOGI KUNCI:\n• ROW (Baris): Satu record lengkap dalam tabel (contoh: data satu pengguna)\n• COLUMN (Kolom): Satu atribut/field dalam tabel (contoh: 'nama' atau 'email')\n• FIELD: Titik pertemuan antara row dan column (contoh: nama 'John' di baris user#5)\n• PRIMARY KEY: Identifier unik untuk setiap row (contoh: user_id yang tidak boleh duplikat)\n• FOREIGN KEY: Column yang mereferensikan PRIMARY KEY dari tabel lain (contoh: order.user_id yang menunjuk ke users.id)\n\nRELEVANSI DALAM KEHIDUPAN:\nSetiap kali Anda login media sosial, pesan ojek online, atau transfer uang, database relasional bekerja di balik layar. Mereka memastikan data Anda aman, terstruktur, dan dapat diakses dalam milidetik.",
+    points: 5
+  },
+  {
+    id: 5,
+    type: 'quiz',
+    title: "Cek Protokol: Relational DB",
+    section: "Dasar-Dasar",
+    description: "Uji pemahaman Anda tentang database relasional.",
+    question: "Apa yang dimaksud dengan PRIMARY KEY dalam sebuah tabel database?",
+    options: [
+      "Kolom yang bisa berisi data duplikat",
+      "Identifier unik untuk setiap baris dalam tabel",
+      "Kolom yang menghubungkan ke tabel eksternal",
+      "Baris pertama dalam setiap tabel"
+    ],
+    correctAnswer: 1,
+    points: 10
+  },
+  {
+    id: 6,
+    type: 'quiz',
+    title: "Cek Protokol: Table Keys",
+    section: "Dasar-Dasar",
+    description: "Verifikasi pengetahuan tentang foreign key.",
+    question: "Apa fungsi dari FOREIGN KEY dalam database relasional?",
+    options: [
+      "Mengunci tabel agar tidak bisa diedit",
+      "Membuat backup otomatis dari data",
+      "Menghubungkan data antar tabel melalui referensi ke primary key tabel lain",
+      "Mengenkripsi data sensitif"
+    ],
+    correctAnswer: 2,
+    points: 10
+  },
+  {
+    id: 7,
+    type: 'quiz',
+    title: "Cek Protokol: Terminology",
+    section: "Dasar-Dasar",
+    description: "Uji pengetahuan terminologi database.",
+    question: "Dalam konteks database, apa yang dimaksud dengan ROW (baris)?",
+    options: [
+      "Nama tabel dalam database",
+      "Satu record lengkap yang berisi semua atribut",
+      "Header kolom di bagian atas tabel",
+      "Query SQL yang dijalankan"
+    ],
+    correctAnswer: 1,
+    points: 10
+  },
 
   // SECTION 1: BASIC RECONNAISSANCE (SELECT)
   {
-    id: 4,
+    id: 8,
     type: 'query',
-    title: "Identify Targets",
-    section: "Reconnaissance",
-    description: "Retrieve the full list of users from the database.",
-    briefing: "AGENT, WE HAVE BREACHED THE PERIMETER. YOUR FIRST TASK IS TO IDENTIFY ALL POTENTIAL TARGETS WITHIN THE SYSTEM. EXTRACT THE FULL USER REGISTRY.",
+    title: "Identifikasi Target",
+    section: "Pengintaian",
+    description: "Ambil daftar lengkap pengguna dari database.",
+    briefing: "AGEN, KITA TELAH MENEMBUS PERIMETER. TUGAS PERTAMA ANDA ADALAH MENGIDENTIFIKASI SEMUA TARGET POTENSIAL DI DALAM SISTEM. EKSTRAK REGISTRI PENGGUNA LENGKAP.",
     query: "SELECT * FROM users",
     points: 10
   },
   {
-    id: 5,
+    id: 9,
     type: 'concept',
-    title: "The SELECT Command",
-    section: "Reconnaissance",
-    description: "Learn about the SELECT statement.",
-    content: "The SELECT command is your eyes in the digital world. It tells the database WHICH columns you want to see.\n\nUsing 'SELECT *' means 'show me everything'. The asterisk (*) is a wildcard that matches all columns.\n\nHowever, in a real infiltration, bandwidth is precious. Experienced netrunners often specify exactly which columns they need (e.g., 'SELECT name, email') to avoid detection and speed up data transfer.",
+    title: "Perintah SELECT",
+    section: "Pengintaian",
+    description: "Pelajari tentang pernyataan SELECT.",
+    content: "Perintah SELECT adalah mata Anda di dunia digital. Ini memberi tahu database kolom MANA yang ingin Anda lihat.\n\nMenggunakan 'SELECT *' berarti 'tunjukkan semuanya'. Tanda bintang (*) adalah wildcard yang cocok dengan semua kolom.\n\nNamun, dalam infiltrasi nyata, bandwidth sangat berharga. Netrunner berpengalaman sering menentukan dengan tepat kolom mana yang mereka butuhkan (mis., 'SELECT name, email') untuk menghindari deteksi dan mempercepat transfer data.",
     points: 5
   },
   {
-    id: 6,
+    id: 10,
     type: 'query',
-    title: "Specific Columns",
-    section: "Reconnaissance",
-    description: "Select only the name and job of all users.",
-    briefing: "BANDWIDTH IS LIMITED. STOP DOWNLOADING JUNK DATA. EXTRACT ONLY THE NAMES AND JOB TITLES. WE DON'T NEED THE REST.",
+    title: "Kolom Spesifik",
+    section: "Pengintaian",
+    description: "Pilih hanya nama dan pekerjaan dari semua pengguna.",
+    briefing: "BANDWIDTH TERBATAS. BERHENTI MENGUNDUH DATA SAMPAH. EKSTRAK HANYA NAMA DAN JUDUL PEKERJAAN. KITA TIDAK BUTUH SISANYA.",
     query: "SELECT name, job FROM users",
     points: 25
   },
   {
-    id: 7,
+    id: 11,
     type: 'query',
-    title: "Filter by Age",
-    section: "Reconnaissance",
-    description: "Find all users who are 25 years old or older.",
-    briefing: "GOOD WORK. NOW WE NEED TO NARROW DOWN THE LIST. FOCUS ON MATURE TARGETS. FILTER THE REGISTRY FOR INDIVIDUALS AGED 25 OR OLDER.",
+    title: "Filter berdasarkan Usia",
+    section: "Pengintaian",
+    description: "Temukan semua pengguna yang berusia 25 tahun atau lebih.",
+    briefing: "KERJA BAGUS. SEKARANG KITA PERLU MEMPERSEMPIT DAFTAR. FOKUS PADA TARGET DEWASA. FILTER REGISTRI UNTUK INDIVIDU BERUSIA 25 TAHUN ATAU LEBIH.",
     query: "SELECT * FROM users WHERE age >= 25",
     points: 15
   },
   {
-    id: 8,
+    id: 12,
     type: 'concept',
-    title: "Precision Targeting",
-    section: "Reconnaissance",
-    description: "Understanding the power of the WHERE clause.",
-    content: "Imagine a database with a billion users. Asking for 'SELECT *' would crash your system and alert every security bot in the network.\n\nThe WHERE clause is your stealth tool. It filters data BEFORE it leaves the database server. This minimizes bandwidth usage and keeps your footprint small. Always filter as early as possible.",
+    title: "Penargetan Presisi",
+    section: "Pengintaian",
+    description: "Memahami kekuatan klausa WHERE.",
+    content: "Bayangkan database dengan satu miliar pengguna. Meminta 'SELECT *' akan membuat sistem Anda crash dan memperingatkan setiap bot keamanan di jaringan.\n\nKlausa WHERE adalah alat siluman Anda. Ini memfilter data SEBELUM meninggalkan server database. Ini meminimalkan penggunaan bandwidth dan menjaga jejak Anda tetap kecil. Selalu filter sedini mungkin.",
     points: 5
   },
   {
-    id: 9,
+    id: 13,
     type: 'quiz',
-    title: "Protocol Check: Filtering",
-    section: "Reconnaissance",
-    description: "Test your knowledge on filtering data.",
-    question: "Which keyword is used to filter records based on a condition?",
+    title: "Cek Protokol: Filtering",
+    section: "Pengintaian",
+    description: "Uji pengetahuan Anda tentang memfilter data.",
+    question: "Kata kunci mana yang digunakan untuk memfilter catatan berdasarkan kondisi?",
     options: [
       "FILTER",
       "WHEN",
@@ -101,78 +158,78 @@ export const lessons = [
     points: 10
   },
   {
-    id: 10,
+    id: 14,
     type: 'query',
-    title: "Locate Engineers",
-    section: "Reconnaissance",
-    description: "Find all users with the job title 'Engineer'.",
-    briefing: "WE NEED TECHNICAL ACCESS. LOCATE THE SYSTEM ENGINEERS. THEY HOLD THE KEYS TO THE DEEPER LEVELS.",
+    title: "Lokasi Insinyur",
+    section: "Pengintaian",
+    description: "Temukan semua pengguna dengan judul pekerjaan 'Engineer'.",
+    briefing: "KITA BUTUH AKSES TEKNIS. TEMUKAN INSINYUR SISTEM. MEREKA MEMEGANG KUNCI KE LEVEL YANG LEBIH DALAM.",
     query: "SELECT * FROM users WHERE job = 'Engineer'",
     points: 20
   },
 
   // SECTION 2: DATA MANIPULATION (ORDER & LIMIT)
   {
-    id: 11,
+    id: 15,
     type: 'query',
-    title: "Sort by Age",
-    section: "Data Manipulation",
-    description: "List all users sorted by age in ascending order.",
-    briefing: "THE DATA IS A MESS. ORGANIZE IT. SORT THE TARGETS BY AGE, YOUNGEST TO OLDEST.",
+    title: "Urutkan berdasarkan Usia",
+    section: "Manipulasi Data",
+    description: "Daftar semua pengguna diurutkan berdasarkan usia dalam urutan menaik.",
+    briefing: "DATA INI BERANTAKAN. ORGANISASIKAN. URUTKAN TARGET BERDASARKAN USIA, DARI YANG TERMUDA HINGGA TERTUA.",
     query: "SELECT * FROM users ORDER BY age ASC",
     points: 30
   },
   {
-    id: 12,
+    id: 16,
     type: 'query',
-    title: "Top Earners",
-    section: "Data Manipulation",
-    description: "Find the top 3 users with the highest id (simulating latest signups).",
-    briefing: "WE NEED THE NEWEST RECRUITS. RETRIEVE THE LAST 3 ENTRIES ADDED TO THE SYSTEM.",
+    title: "Penghasil Teratas",
+    section: "Manipulasi Data",
+    description: "Temukan 3 pengguna teratas dengan id tertinggi (mensimulasikan pendaftaran terbaru).",
+    briefing: "KITA BUTUH REKRUTAN TERBARU. AMBIL 3 ENTRI TERAKHIR YANG DITAMBAHKAN KE SISTEM.",
     query: "SELECT * FROM users ORDER BY id DESC LIMIT 3",
     points: 35
   },
 
   // SECTION 3: AGGREGATION (COUNT, SUM, AVG)
   {
-    id: 13,
+    id: 17,
     type: 'query',
-    title: "Count Targets",
-    section: "Aggregation",
-    description: "Count the total number of users.",
-    briefing: "SITREP REPORT REQUESTED. HOW MANY TOTAL TARGETS ARE WE DEALING WITH? GIVE ME A HEADCOUNT.",
+    title: "Hitung Target",
+    section: "Agregasi",
+    description: "Hitung jumlah total pengguna.",
+    briefing: "LAPORAN SITREP DIMINTA. BERAPA BANYAK TOTAL TARGET YANG KITA HADAPI? BERIKAN SAYA JUMLAH KEPALA.",
     query: "SELECT COUNT(*) FROM users",
     points: 40
   },
   {
-    id: 14,
+    id: 18,
     type: 'query',
-    title: "Average Age",
-    section: "Aggregation",
-    description: "Calculate the average age of all users.",
-    briefing: "PROFILING IN PROGRESS. DETERMINE THE AVERAGE AGE OF THE USERBASE TO ADJUST OUR SOCIAL ENGINEERING PROTOCOLS.",
+    title: "Usia Rata-rata",
+    section: "Agregasi",
+    description: "Hitung usia rata-rata semua pengguna.",
+    briefing: "PROFILING SEDANG BERLANGSUNG. TENTUKAN USIA RATA-RATA BASIS PENGGUNA UNTUK MENYESUAIKAN PROTOKOL REKAYASA SOSIAL KITA.",
     query: "SELECT AVG(age) FROM users",
     points: 45
   },
 
   // SECTION 4: COMPLEX QUERIES (JOIN & SUBQUERY)
   {
-    id: 15,
+    id: 19,
     type: 'query',
-    title: "Order History",
+    title: "Riwayat Pesanan",
     section: "Deep Dive",
-    description: "Find all orders placed by 'Alice'. (Use JOIN)",
-    briefing: "TARGET 'ALICE' IS A PERSON OF INTEREST. CROSS-REFERENCE THE USER REGISTRY WITH THE ORDER LOGS. FIND EVERYTHING SHE BOUGHT.",
+    description: "Temukan semua pesanan yang dibuat oleh 'Alice'. (Gunakan JOIN)",
+    briefing: "TARGET 'ALICE' ADALAH ORANG YANG DIMINATI. REFERENSI SILANG REGISTRI PENGGUNA DENGAN LOG PESANAN. TEMUKAN SEMUA YANG DIA BELI.",
     query: "SELECT * FROM users JOIN orders ON users.id = orders.user_id WHERE users.name = 'Alice'",
     points: 60
   },
   {
-    id: 16,
+    id: 20,
     type: 'query',
-    title: "High Value Targets",
+    title: "Target Bernilai Tinggi",
     section: "Deep Dive",
-    description: "Find users who have placed an order for a 'Laptop'. (Use Subquery)",
-    briefing: "WE ARE LOOKING FOR TECH BUYERS. IDENTIFY ANY USER WHO HAS PURCHASED A 'LAPTOP'. USE A SUBQUERY TO FILTER THE IDS.",
+    description: "Temukan pengguna yang telah memesan 'Laptop'. (Gunakan Subquery)",
+    briefing: "KITA MENCARI PEMBELI TEKNOLOGI. IDENTIFIKASI PENGGUNA MANA PUN YANG TELAH MEMBELI 'LAPTOP'. GUNAKAN SUBQUERY UNTUK MEMFILTER ID.",
     query: "SELECT * FROM users WHERE id IN (SELECT user_id FROM orders WHERE product = 'Laptop')",
     points: 75
   }

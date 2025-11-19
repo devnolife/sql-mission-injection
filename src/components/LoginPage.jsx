@@ -21,10 +21,10 @@ export default function LoginPage({ onLogin }) {
 
   useEffect(() => {
     const sequence = [
-      'INITIALIZING SECURE CONNECTION...',
-      'ESTABLISHING ENCRYPTED TUNNEL...',
-      'VERIFYING BIOMETRICS...',
-      'ACCESS GRANTED.'
+      'MENGINISIALISASI KONEKSI AMAN...',
+      'MEMBANGUN TEROWONGAN TERENKRIPSI...',
+      'MEMVERIFIKASI BIOMETRIK...',
+      'AKSES DITERIMA.'
     ];
 
     let i = 0;
@@ -86,7 +86,7 @@ export default function LoginPage({ onLogin }) {
         <div className='bg-[#00f3ff]/10 border border-[#00f3ff] border-b-0 p-2 flex justify-between items-center'>
           <div className='flex items-center gap-2'>
             <Terminal size={16} />
-            <span className='text-xs font-bold tracking-widest'>SECURE_LOGIN_TERMINAL_V2.0</span>
+            <span className='text-xs font-bold tracking-widest'>TERMINAL_LOGIN_AMAN_V2.0</span>
           </div>
           <div className='flex gap-1'>
             <div className='w-3 h-3 bg-[#00f3ff] rounded-full opacity-50'></div>
@@ -116,13 +116,13 @@ export default function LoginPage({ onLogin }) {
             <h1 className='text-3xl font-bold tracking-tighter glow-text-blue mb-2'>
               <GlitchText text='QUERY_WIZARD' />
             </h1>
-            <p className='text-[#00f3ff]/60 text-xs tracking-widest'>DATABASE INFILTRATION PROTOCOL</p>
+            <p className='text-[#00f3ff]/60 text-xs tracking-widest'>PROTOKOL INFILTRASI DATABASE</p>
           </div>
 
           <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='space-y-4'>
               <div className='group'>
-                <label className='text-xs text-[#00f3ff]/70 mb-1 block ml-1'>USERNAME_</label>
+                <label className='text-xs text-[#00f3ff]/70 mb-1 block ml-1'>NAMA PENGGUNA_</label>
                 <div className='relative flex items-center'>
                   <div className='absolute left-3 text-[#00f3ff]/50'>
                     <Shield size={16} />
@@ -132,13 +132,13 @@ export default function LoginPage({ onLogin }) {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className='w-full bg-[#00f3ff]/5 border border-[#00f3ff]/30 rounded-none py-3 pl-10 pr-4 text-[#00f3ff] placeholder-[#00f3ff]/30 focus:outline-none focus:border-[#00f3ff] focus:bg-[#00f3ff]/10 transition-all font-mono'
-                    placeholder='ENTER_ID'
+                    placeholder='MASUKKAN_ID'
                   />
                 </div>
               </div>
 
               <div className='group'>
-                <label className='text-xs text-[#00f3ff]/70 mb-1 block ml-1'>PASSWORD_</label>
+                <label className='text-xs text-[#00f3ff]/70 mb-1 block ml-1'>KATA SANDI_</label>
                 <div className='relative flex items-center'>
                   <div className='absolute left-3 text-[#00f3ff]/50'>
                     <Lock size={16} />
@@ -147,7 +147,7 @@ export default function LoginPage({ onLogin }) {
                     type='password'
                     defaultValue='password'
                     className='w-full bg-[#00f3ff]/5 border border-[#00f3ff]/30 rounded-none py-3 pl-10 pr-4 text-[#00f3ff] placeholder-[#00f3ff]/30 focus:outline-none focus:border-[#00f3ff] focus:bg-[#00f3ff]/10 transition-all font-mono'
-                    placeholder='ENTER_KEY'
+                    placeholder='MASUKKAN_KUNCI'
                   />
                 </div>
               </div>
@@ -157,7 +157,7 @@ export default function LoginPage({ onLogin }) {
               {bootSequence.map((line, i) => (
                 <div key={i} className='opacity-80'>&gt; {line}</div>
               ))}
-              {isLoading && <div className='animate-pulse'>&gt; DECRYPTING KEY...</div>}
+              {isLoading && <div className='animate-pulse'>&gt; MENDEKRIPSI KUNCI...</div>}
             </div>
 
             <motion.button
@@ -167,7 +167,7 @@ export default function LoginPage({ onLogin }) {
               className='w-full bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-bold py-3 uppercase tracking-widest hover:shadow-[0_0_20px_rgba(0,243,255,0.4)] transition-all flex items-center justify-center gap-2 group relative overflow-hidden'
             >
               <span className='relative z-10 flex items-center gap-2'>
-                {isLoading ? 'ACCESSING...' : 'INITIATE_LINK'}
+                {isLoading ? 'MENGAKSES...' : 'MULAI_TAUTAN'}
                 {!isLoading && <ChevronRight size={16} className='group-hover:translate-x-1 transition-transform' />}
               </span>
               <div className='absolute inset-0 bg-[#00f3ff] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 opacity-10'></div>
@@ -177,9 +177,9 @@ export default function LoginPage({ onLogin }) {
 
         <div className='mt-4 text-center'>
           <p className='text-[10px] text-[#00f3ff]/40'>
-            UNAUTHORIZED ACCESS IS A FEDERAL CRIME.
+            AKSES TIDAK SAH ADALAH KEJAHATAN FEDERAL.
             <br />
-            IP ADDRESS LOGGED: 192.168.0.1
+            ALAMAT IP TERCATAT: 192.168.0.1
           </p>
         </div>
       </motion.div>

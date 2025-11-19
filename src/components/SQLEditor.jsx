@@ -13,7 +13,7 @@ const SQLEditor = ({ query, setQuery, onRun }) => {
     const handlePaste = (e) => {
         e.preventDefault();
         // Hacker-style alert
-        alert("⚠️ SECURITY ALERT: AUTOMATED INPUT DETECTED.\n\nManual override required. Copy/Paste functionality has been disabled by the mainframe.");
+        alert("⚠️ PERINGATAN KEAMANAN: INPUT OTOMATIS TERDETEKSI.\n\nDiperlukan pengambilalihan manual. Fungsi Salin/Tempel telah dinonaktifkan oleh mainframe.");
     };
 
     const handleKeyDown = (e) => {
@@ -91,7 +91,7 @@ const SQLEditor = ({ query, setQuery, onRun }) => {
                     onPaste={handlePaste}
                     className="w-full h-full bg-transparent text-[#00ff41] font-mono p-4 text-lg resize-none focus:outline-none custom-scrollbar leading-relaxed"
                     spellCheck="false"
-                    placeholder="// ENTER SQL COMMAND..."
+                    placeholder="// MASUKKAN PERINTAH SQL..."
                 />
 
                 {/* Blinking Cursor Effect (Visual only, since textarea has its own) */}
@@ -102,7 +102,7 @@ const SQLEditor = ({ query, setQuery, onRun }) => {
                 {/* Auto-complete Popup */}
                 {suggestions.length > 0 && (
                     <div className="absolute bottom-16 left-4 bg-black border border-[#00f3ff] shadow-[0_0_20px_rgba(0,243,255,0.2)] z-50 min-w-[150px]">
-                        <div className="bg-[#00f3ff]/20 text-[#00f3ff] text-[10px] font-bold px-2 py-1 tracking-widest">SUGGESTIONS</div>
+                        <div className="bg-[#00f3ff]/20 text-[#00f3ff] text-[10px] font-bold px-2 py-1 tracking-widest">SARAN</div>
                         {suggestions.map((s, i) => (
                             <div
                                 key={s}
@@ -115,7 +115,7 @@ const SQLEditor = ({ query, setQuery, onRun }) => {
                                 {s}
                             </div>
                         ))}
-                        <div className="px-2 py-1 text-[9px] text-slate-500 border-t border-[#00f3ff]/20">TAB to insert</div>
+                        <div className="px-2 py-1 text-[9px] text-slate-500 border-t border-[#00f3ff]/20">TAB untuk menyisipkan</div>
                     </div>
                 )}
             </div>
@@ -126,7 +126,7 @@ const SQLEditor = ({ query, setQuery, onRun }) => {
                 className="absolute bottom-4 right-6 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50 px-6 py-2 rounded-sm flex items-center gap-2 transition-all hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] group-hover:opacity-100 opacity-80"
             >
                 <Play size={16} className="fill-current" />
-                <span className="font-bold tracking-widest text-sm">EXECUTE</span>
+                <span className="font-bold tracking-widest text-sm">EKSEKUSI</span>
             </button>
         </div>
     );

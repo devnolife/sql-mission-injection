@@ -40,7 +40,7 @@ const QuizModule = ({ lesson, onComplete }) => {
         {/* Header */}
         <div className="flex items-center gap-3 mb-8 border-b border-[#00f3ff]/20 pb-4">
           <HelpCircle className="text-[#00f3ff]" size={24} />
-          <h2 className="text-2xl font-bold text-[#00f3ff] tracking-wider">KNOWLEDGE_CHECK // {lesson.title}</h2>
+          <h2 className="text-2xl font-bold text-[#00f3ff] tracking-wider">CEK_PENGETAHUAN // {lesson.title}</h2>
         </div>
 
         {/* Question */}
@@ -100,12 +100,12 @@ const QuizModule = ({ lesson, onComplete }) => {
                 {isCorrect ? (
                   <>
                     <Shield size={20} />
-                    <span>ACCESS GRANTED. PROCEEDING...</span>
+                    <span>AKSES DITERIMA. MELANJUTKAN...</span>
                   </>
                 ) : (
                   <>
                     <AlertTriangle size={20} />
-                    <span>ACCESS DENIED. INCORRECT PROTOCOL.</span>
+                    <span>AKSES DITOLAK. PROTOKOL SALAH.</span>
                   </>
                 )}
               </motion.div>
@@ -123,7 +123,7 @@ const QuizModule = ({ lesson, onComplete }) => {
                   : 'bg-gray-800 text-gray-500 cursor-not-allowed'}
               `}
             >
-              SUBMIT_ANSWER
+              KIRIM_JAWABAN
             </button>
           )}
 
@@ -135,7 +135,7 @@ const QuizModule = ({ lesson, onComplete }) => {
               }}
               className="px-8 py-3 border border-[#ff0000] text-[#ff0000] hover:bg-[#ff0000]/10 font-bold tracking-widest transition-all"
             >
-              RETRY_CONNECTION
+              COBA_KONEKSI_ULANG
             </button>
           )}
         </div>

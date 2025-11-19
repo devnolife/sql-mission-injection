@@ -182,10 +182,10 @@ function App() {
             initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2 }}
             className="h-1 bg-[#00f3ff] mb-4 shadow-[0_0_10px_#00f3ff]"
           />
-          <Typewriter text="INITIALIZING NETRUNNER PROTOCOL..." speed={30} />
-          <Typewriter text="CONNECTING TO MAINFRAME..." speed={30} delay={800} />
-          <Typewriter text="BYPASSING FIREWALLS..." speed={30} delay={1600} />
-          <Typewriter text="ACCESS GRANTED." speed={30} delay={2200} className="text-[#00ff41] font-bold" />
+          <Typewriter text="MENGINISIALISASI PROTOKOL NETRUNNER..." speed={30} />
+          <Typewriter text="MENGHUBUNGKAN KE MAINFRAME..." speed={30} delay={800} />
+          <Typewriter text="MELEWATI FIREWALL..." speed={30} delay={1600} />
+          <Typewriter text="AKSES DITERIMA." speed={30} delay={2200} className="text-[#00ff41] font-bold" />
         </div>
       </div>
     );
@@ -227,8 +227,8 @@ function App() {
             </div>
             {missionLogOpen && (
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-[#00f3ff] tracking-widest uppercase">{userProfile?.name || "UNKNOWN"}</span>
-                <span className="text-[10px] text-[#00f3ff]/60 tracking-wider">{userProfile?.role || "INITIATE"}</span>
+                <span className="text-sm font-bold text-[#00f3ff] tracking-widest uppercase">{userProfile?.name || "TIDAK DIKETAHUI"}</span>
+                <span className="text-[10px] text-[#00f3ff]/60 tracking-wider">{userProfile?.role || "INISIASI"}</span>
               </div>
             )}
           </div>
@@ -244,7 +244,7 @@ function App() {
                   const isCompleted = completedLessons.has(lesson.id);
                   const isLocked = lesson.id > activeLessonId && !completedLessons.has(lesson.id);
                   const isActive = activeLessonId === lesson.id;
-                  const title = isLocked ? "ENCRYPTED_DATA" : lesson.title;
+                  const title = isLocked ? "DATA_TERENKRIPSI" : lesson.title;
 
                   return (
                     <button
@@ -334,10 +334,10 @@ function App() {
                 >
                   <div className="flex items-center gap-2">
                     <Terminal size={14} className="text-[#00f3ff]" />
-                    <span className="text-xs font-bold text-[#00f3ff] tracking-widest">COMMAND_CONSOLE_V2.0</span>
+                    <span className="text-xs font-bold text-[#00f3ff] tracking-widest">KONSOL_PERINTAH_V2.0</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-[#00f3ff]/50">{consoleOpen ? "MINIMIZE" : "MAXIMIZE"}</span>
+                    <span className="text-[10px] text-[#00f3ff]/50">{consoleOpen ? "MINIMALKAN" : "MAKSIMALKAN"}</span>
                     {consoleOpen ? <Minimize2 size={14} className="text-[#00f3ff]" /> : <Maximize2 size={14} className="text-[#00f3ff]" />}
                   </div>
                 </div>
@@ -347,7 +347,7 @@ function App() {
                   <div className="flex-1 p-0 relative bg-black/90 overflow-hidden">
                     {/* Current Objective Overlay */}
                     <div className="absolute top-0 right-0 p-2 bg-[#00f3ff]/5 border-b border-l border-[#00f3ff]/20 rounded-bl-lg z-10 max-w-md pointer-events-none">
-                      <div className="text-[10px] text-[#00f3ff] uppercase tracking-widest mb-1">Current Directive</div>
+                      <div className="text-[10px] text-[#00f3ff] uppercase tracking-widest mb-1">Arahan Saat Ini</div>
                       <div className="text-xs text-slate-300 font-mono">
                         {lessons.find(l => l.id === activeLessonId)?.description}
                       </div>
@@ -370,9 +370,9 @@ function App() {
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-black/90 border-2 border-[#00ff41] p-8 rounded-xl shadow-[0_0_50px_rgba(0,255,65,0.3)] text-center"
           >
             <Trophy size={48} className="text-[#00ff41] mx-auto mb-4 glow-text-green" />
-            <h2 className="text-2xl font-bold text-[#00ff41] font-[Orbitron] tracking-widest mb-2 glow-text-green">MISSION COMPLETE</h2>
-            <p className="text-[#00ff41]/80 font-mono">Data extraction confirmed.</p>
-            <div className="mt-4 text-sm text-slate-400">XP REWARD: <span className="text-white font-bold">{lessons.find(l => l.id === activeLessonId)?.points}</span></div>
+            <h2 className="text-2xl font-bold text-[#00ff41] font-[Orbitron] tracking-widest mb-2 glow-text-green">MISI SELESAI</h2>
+            <p className="text-[#00ff41]/80 font-mono">Ekstraksi data terkonfirmasi.</p>
+            <div className="mt-4 text-sm text-slate-400">IMBALAN XP: <span className="text-white font-bold">{lessons.find(l => l.id === activeLessonId)?.points}</span></div>
           </motion.div>
         )}
       </AnimatePresence>

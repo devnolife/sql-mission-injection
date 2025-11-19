@@ -11,8 +11,8 @@ const TableVisualizer = ({ data, tableName, columns, animationState, explanation
         return (
             <div className="w-full h-full flex flex-col items-center justify-center p-8 overflow-y-auto custom-scrollbar">
                 <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold text-[#00f3ff] tracking-[0.2em] mb-2 glow-text-blue">SYSTEM_SCHEMA_VIEW</h2>
-                    <p className="text-[#00f3ff]/50 text-sm font-mono">AVAILABLE DATA NODES DETECTED</p>
+                    <h2 className="text-2xl font-bold text-[#00f3ff] tracking-[0.2em] mb-2 glow-text-blue">TAMPILAN_SKEMA_SISTEM</h2>
+                    <p className="text-[#00f3ff]/50 text-sm font-mono">NODE DATA TERSEDIA TERDETEKSI</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
@@ -27,7 +27,7 @@ const TableVisualizer = ({ data, tableName, columns, animationState, explanation
                                 <div className="flex items-center gap-3 mb-3 border-b border-[#00f3ff]/20 pb-2">
                                     <Database size={18} className="text-[#00f3ff]" />
                                     <span className="text-lg font-bold text-[#00f3ff] uppercase tracking-wider">{name}</span>
-                                    <span className="ml-auto text-xs text-[#00f3ff]/50">{rows.length} RECORDS</span>
+                                    <span className="ml-auto text-xs text-[#00f3ff]/50">{rows.length} REKAMAN</span>
                                 </div>
                                 <div className="space-y-1">
                                     {cols.map(col => (
@@ -53,11 +53,11 @@ const TableVisualizer = ({ data, tableName, columns, animationState, explanation
                 <div className="flex items-center gap-2">
                     <Table size={16} className="text-[#00f3ff]" />
                     <span className="text-xs font-bold text-[#00f3ff] tracking-widest uppercase">
-                        DATA_NODE: <span className="text-white">{tableName}</span>
+                        NODE_DATA: <span className="text-white">{tableName}</span>
                     </span>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] text-[#00f3ff]/60 font-mono">
-                    <span>ROWS: {data.length}</span>
+                    <span>BARIS: {data.length}</span>
                     <span>STATUS: <span className="text-[#00ff41]">ONLINE</span></span>
                 </div>
             </div>
@@ -70,7 +70,7 @@ const TableVisualizer = ({ data, tableName, columns, animationState, explanation
                 >
                     <Info size={16} className="text-[#00f3ff] mt-0.5 flex-shrink-0" />
                     <p className="text-xs text-[#00f3ff] font-mono leading-relaxed">
-                        <span className="font-bold opacity-50 mr-2">SYSTEM_LOG:</span>
+                        <span className="font-bold opacity-50 mr-2">LOG_SISTEM:</span>
                         {explanation}
                     </p>
                 </motion.div>

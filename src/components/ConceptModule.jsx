@@ -1,8 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, ChevronRight, Database } from 'lucide-react';
 
+const TypewriterBlock = ({ text, onComplete, isActive }) => {
+  const [display, setDisplay] = useState('');
+  const index = useRef(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (index.current < text.length) {
+        setDisplay((prev) => prev + text.charAt(index.current));
+        index.current++;
+      } else {
+        clearInterval(timer);
+        if (onComplete) onComplete();
+      }
+    }, 20); // Typing speed
+    return () => clearInterval(timer);
+  }, [text, onComplete]);
+
+  return (
+    <span>
+      {display}
+      {isActive && <span className="inline-block w-2 h-4 bg-[#00f3ff] ml-1 animate-pulse align-middle" />}
+    </span>
+  );
+};
+
 const ConceptModule = ({ lesson, onComplete }) => {
+  const paragraphs = lesson.content.split('\n\n');
+  const [visibleCount, setVisibleCount] = useState(0);
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8 relative overflow-hidden">
       <motion.div
@@ -22,7 +50,7 @@ const ConceptModule = ({ lesson, onComplete }) => {
           </motion.div>
           <h2 className="text-2xl font-bold text-[#00f3ff] mb-2 relative z-10">{lesson.title}</h2>
           <div className="w-12 h-1 bg-[#00ff41] mb-4 relative z-10"></div>
-          <p className="text-gray-400 text-sm relative z-10">DATABASE FUNDAMENTALS</p>
+          <p className="text-gray-400 text-sm relative z-10">DASAR DATABASE</p>
         </div>
 
         {/* Right Side: Content */}
@@ -31,25 +59,39 @@ const ConceptModule = ({ lesson, onComplete }) => {
             <div className="prose prose-invert max-w-none">
               <h3 className="text-[#00ff41] font-mono text-lg mb-4 flex items-center gap-2">
                 <BookOpen size={20} />
-                DATA_ARCHIVE_ENTRY #{lesson.id}
+                ENTRI_ARSIP_DATA #{lesson.id}
               </h3>
 
               <div className="text-gray-300 space-y-4 font-mono leading-relaxed text-sm md:text-base">
-                {lesson.content.split('\n\n').map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
+                {paragraphs.map((paragraph, idx) => (
+                  idx <= visibleCount && (
+                    <p key={idx} className="min-h-[1.5em]">
+                      {idx < visibleCount ? (
+                        paragraph
+                      ) : (
+                        <TypewriterBlock
+                          text={paragraph}
+                          isActive={true}
+                          onComplete={() => setVisibleCount(prev => prev + 1)}
+                        />
+                      )}
+                    </p>
+                  )
                 ))}
               </div>
             </div>
           </div>
 
           <div className="mt-8 pt-6 border-t border-[#00f3ff]/20 flex justify-end">
-            <button
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: visibleCount >= paragraphs.length ? 1 : 0.5 }}
               onClick={onComplete}
               className="group flex items-center gap-3 bg-[#00f3ff] text-black px-6 py-3 font-bold tracking-widest hover:bg-[#00c2cc] transition-all shadow-[0_0_20px_rgba(0,243,255,0.3)]"
             >
-              <span>ACKNOWLEDGE_DATA</span>
+              <span>KONFIRMASI_DATA</span>
               <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+            </motion.button>
           </div>
         </div>
       </motion.div>

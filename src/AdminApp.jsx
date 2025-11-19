@@ -16,7 +16,7 @@ const AdminApp = () => {
     if (pin === 'admin123') {
       setIsAuthenticated(true);
     } else {
-      alert('Access Denied');
+      alert('Akses Ditolak');
     }
   };
 
@@ -44,7 +44,7 @@ const AdminApp = () => {
   };
 
   const handleDeleteLesson = (id) => {
-    if (window.confirm('Are you sure you want to delete this lesson?')) {
+    if (window.confirm('Apakah Anda yakin ingin menghapus pelajaran ini?')) {
       setLessons(lessons.filter(l => l.id !== id));
       if (selectedLesson && selectedLesson.id === id) {
         setSelectedLesson(null);
@@ -69,23 +69,23 @@ const AdminApp = () => {
               <Lock className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-center text-white mb-6">Admin Access</h1>
+          <h1 className="text-2xl font-bold text-center text-white mb-6">Akses Admin</h1>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Security PIN</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">PIN Keamanan</label>
               <input
                 type="password"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white outline-none transition-all"
-                placeholder="Enter PIN"
+                placeholder="Masukkan PIN"
               />
             </div>
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded transition-colors"
             >
-              Unlock System
+              Buka Kunci Sistem
             </button>
           </form>
         </div>
@@ -102,8 +102,8 @@ const AdminApp = () => {
             <Edit3 className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Mission Control</h1>
-            <p className="text-sm text-gray-500">Lesson Configuration Manager</p>
+            <h1 className="text-xl font-bold text-gray-900">Kontrol Misi</h1>
+            <p className="text-sm text-gray-500">Manajer Konfigurasi Pelajaran</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -112,12 +112,12 @@ const AdminApp = () => {
             className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
           >
             {copied ? <Check size={18} /> : <Copy size={18} />}
-            {copied ? 'Copied to Clipboard' : 'Export Config'}
+            {copied ? 'Disalin ke Papan Klip' : 'Ekspor Konfig'}
           </button>
           <button
             onClick={() => setIsAuthenticated(false)}
             className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-            title="Logout"
+            title="Keluar"
           >
             <LogOut size={20} />
           </button>
@@ -136,7 +136,7 @@ const AdminApp = () => {
               className="w-full flex items-center justify-center gap-2 py-2 px-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               <Plus size={18} />
-              New Mission
+              Misi Baru
             </button>
           </div>
           <div className="flex-1 p-2 space-y-1">
@@ -156,7 +156,7 @@ const AdminApp = () => {
                   <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">
                     #{lesson.id}
                   </span>
-                  <span className="text-xs text-gray-400">{lesson.points} pts</span>
+                  <span className="text-xs text-gray-400">{lesson.points} poin</span>
                 </div>
                 <h3 className="font-medium text-gray-900 truncate">{lesson.title}</h3>
                 <p className="text-xs text-gray-500 truncate">{lesson.section}</p>
@@ -171,7 +171,7 @@ const AdminApp = () => {
             <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                 <h2 className="text-lg font-semibold text-gray-900">
-                  {isEditing ? (selectedLesson ? 'Edit Mission' : 'Create New Mission') : 'Mission Details'}
+                  {isEditing ? (selectedLesson ? 'Edit Misi' : 'Buat Misi Baru') : 'Detail Misi'}
                 </h2>
                 {!isEditing && (
                   <div className="flex gap-2">
@@ -185,7 +185,7 @@ const AdminApp = () => {
                       onClick={() => handleDeleteLesson(selectedLesson.id)}
                       className="px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors"
                     >
-                      Delete
+                      Hapus
                     </button>
                   </div>
                 )}
@@ -195,7 +195,7 @@ const AdminApp = () => {
                 <form onSubmit={handleSaveLesson} className="p-6 space-y-6">
                   <div className="grid grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Mission Title</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Judul Misi</label>
                       <input
                         name="title"
                         defaultValue={selectedLesson?.title}
@@ -204,7 +204,7 @@ const AdminApp = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Section / Category</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Bagian / Kategori</label>
                       <input
                         name="section"
                         defaultValue={selectedLesson?.section}
@@ -215,7 +215,7 @@ const AdminApp = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Description (Short)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi (Singkat)</label>
                     <input
                       name="description"
                       defaultValue={selectedLesson?.description}
@@ -225,7 +225,7 @@ const AdminApp = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Mission Briefing (Full Text)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Pengarahan Misi (Teks Lengkap)</label>
                     <textarea
                       name="briefing"
                       defaultValue={selectedLesson?.briefing}
@@ -236,7 +236,7 @@ const AdminApp = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Solution Query</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Query Solusi</label>
                     <div className="relative">
                       <textarea
                         name="query"
@@ -250,7 +250,7 @@ const AdminApp = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Points Reward</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Imbalan Poin</label>
                     <input
                       type="number"
                       name="points"
@@ -269,35 +269,35 @@ const AdminApp = () => {
                       }}
                       className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                     >
-                      Cancel
+                      Batal
                     </button>
                     <button
                       type="submit"
                       className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
                     >
                       <Save size={18} />
-                      Save Mission
+                      Simpan Misi
                     </button>
                   </div>
                 </form>
               ) : (
                 <div className="p-6 space-y-8">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Mission Overview</h3>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Ikhtisar Misi</h3>
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                       <p className="text-lg text-gray-900">{selectedLesson.description}</p>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Briefing Data</h3>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Data Pengarahan</h3>
                     <div className="bg-black p-4 rounded-lg border border-gray-800 shadow-inner">
                       <p className="font-mono text-green-500 text-sm leading-relaxed">{selectedLesson.briefing}</p>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Target Solution</h3>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Solusi Target</h3>
                     <div className="bg-gray-900 p-4 rounded-lg border border-gray-800 shadow-inner flex items-start gap-3">
                       <FileJson className="text-blue-400 mt-1 shrink-0" size={20} />
                       <code className="font-mono text-blue-300 text-sm break-all">{selectedLesson.query}</code>
@@ -311,8 +311,8 @@ const AdminApp = () => {
               <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                 <Edit3 size={40} className="text-gray-300" />
               </div>
-              <p className="text-lg font-medium text-gray-500">Select a mission to edit</p>
-              <p className="text-sm">or create a new one to expand the campaign</p>
+              <p className="text-lg font-medium text-gray-500">Pilih misi untuk diedit</p>
+              <p className="text-sm">atau buat yang baru untuk memperluas kampanye</p>
             </div>
           )}
         </main>
