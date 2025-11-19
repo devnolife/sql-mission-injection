@@ -1,0 +1,39 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import UserApp from './UserApp';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<UserApp />} />
+        <Route path="/admin" element={<AdminRoute />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+// Protected Admin Route
+function AdminRoute() {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleAdminLogin = () => {
+    setIsAdminLoggedIn(true);
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminLoggedIn(false);
+    navigate('/');
+  };
+
+  if (!isAdminLoggedIn) {
+    return <AdminLogin onAdminLogin={handleAdminLogin} />;
+  }
+
+  return <AdminDashboard onLogout={handleAdminLogout} />;
+}
+
+export default App;
