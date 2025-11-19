@@ -3,6 +3,8 @@ import SQLEditor from './components/SQLEditor';
 import TableVisualizer from './components/TableVisualizer';
 import LoginPage from './components/LoginPage';
 import MissionBriefing from './components/MissionBriefing';
+import QuizModule from './components/QuizModule';
+import ConceptModule from './components/ConceptModule';
 import { initialData, executeQuery } from './lib/sqlEngine';
 import { lessons } from './lib/lessons';
 import { Database, BookOpen, Terminal, LogOut, Lock, CheckCircle, Star, Trophy, Cpu, Shield, Radio, Minimize2, Maximize2, X, ChevronRight, ChevronLeft, User } from 'lucide-react';
@@ -105,7 +107,7 @@ function App() {
     setExplanation(result.explanation);
 
     const currentLesson = lessons.find(l => l.id === activeLessonId);
-    if (currentLesson && !completedLessons.has(currentLesson.id)) {
+    if (currentLesson && !completedLessons.has(currentLesson.id) && currentLesson.query) {
       // Normalize: remove all whitespace, lowercase, remove trailing semicolon
       const normalize = (str) => str.toLowerCase().replace(/\s+/g, '').replace(/;$/, '');
       if (normalize(query) === normalize(currentLesson.query)) {
@@ -153,6 +155,13 @@ function App() {
 
     setIsTyping(true);
     setQuery("");
+
+    if (!text) {
+      setIsTyping(false);
+      setConsoleOpen(false);
+      return;
+    }
+
     setConsoleOpen(true);
     for (let i = 0; i < text.length; i++) {
       await new Promise(r => setTimeout(r, 20));
@@ -290,56 +299,67 @@ function App() {
 
       {/* MAIN CONTENT AREA */}
       <div className="flex-1 flex flex-col relative min-w-0">
-
-        {/* VISUALIZER (Top) */}
-        <div className="flex-1 relative overflow-hidden p-4">
-          <div className="w-full h-full relative flex flex-col">
-            <TableVisualizer
-              data={tableData}
-              tableName={activeTable}
-              columns={columns}
-              animationState={animationState}
-              explanation={explanation}
-            />
-          </div>
-        </div>
-
-        {/* CONSOLE (Bottom) */}
-        <motion.div
-          animate={{ height: consoleOpen ? 300 : 40 }}
-          className="flex-shrink-0 bg-black border-t border-[#00f3ff]/50 shadow-[0_-10px_50px_rgba(0,243,255,0.1)] z-30 flex flex-col transition-all duration-300"
-        >
-          {/* Console Header */}
-          <div
-            className="h-10 bg-[#00f3ff]/10 border-b border-[#00f3ff]/30 flex items-center justify-between px-4 cursor-pointer hover:bg-[#00f3ff]/20 transition-colors flex-shrink-0"
-            onClick={() => setConsoleOpen(!consoleOpen)}
-          >
-            <div className="flex items-center gap-2">
-              <Terminal size={14} className="text-[#00f3ff]" />
-              <span className="text-xs font-bold text-[#00f3ff] tracking-widest">COMMAND_CONSOLE_V2.0</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] text-[#00f3ff]/50">{consoleOpen ? "MINIMIZE" : "MAXIMIZE"}</span>
-              {consoleOpen ? <Minimize2 size={14} className="text-[#00f3ff]" /> : <Maximize2 size={14} className="text-[#00f3ff]" />}
-            </div>
-          </div>
-
-          {/* Console Body */}
-          {consoleOpen && (
-            <div className="flex-1 p-0 relative bg-black/90 overflow-hidden">
-              {/* Current Objective Overlay */}
-              <div className="absolute top-0 right-0 p-2 bg-[#00f3ff]/5 border-b border-l border-[#00f3ff]/20 rounded-bl-lg z-10 max-w-md pointer-events-none">
-                <div className="text-[10px] text-[#00f3ff] uppercase tracking-widest mb-1">Current Directive</div>
-                <div className="text-xs text-slate-300 font-mono">
-                  {lessons.find(l => l.id === activeLessonId)?.description}
+        {(() => {
+          const currentLesson = lessons.find(l => l.id === activeLessonId);
+          if (currentLesson?.type === 'quiz') {
+            return <QuizModule lesson={currentLesson} onComplete={() => completeLesson(currentLesson)} />;
+          }
+          if (currentLesson?.type === 'concept') {
+            return <ConceptModule lesson={currentLesson} onComplete={() => completeLesson(currentLesson)} />;
+          }
+          return (
+            <>
+              {/* VISUALIZER (Top) */}
+              <div className="flex-1 relative overflow-hidden p-4">
+                <div className="w-full h-full relative flex flex-col">
+                  <TableVisualizer
+                    data={tableData}
+                    tableName={activeTable}
+                    columns={columns}
+                    animationState={animationState}
+                    explanation={explanation}
+                  />
                 </div>
               </div>
 
-              <SQLEditor query={query} setQuery={setQuery} onRun={handleRun} />
-            </div>
-          )}
-        </motion.div>
+              {/* CONSOLE (Bottom) */}
+              <motion.div
+                animate={{ height: consoleOpen ? 300 : 40 }}
+                className="flex-shrink-0 bg-black border-t border-[#00f3ff]/50 shadow-[0_-10px_50px_rgba(0,243,255,0.1)] z-30 flex flex-col transition-all duration-300"
+              >
+                {/* Console Header */}
+                <div
+                  className="h-10 bg-[#00f3ff]/10 border-b border-[#00f3ff]/30 flex items-center justify-between px-4 cursor-pointer hover:bg-[#00f3ff]/20 transition-colors flex-shrink-0"
+                  onClick={() => setConsoleOpen(!consoleOpen)}
+                >
+                  <div className="flex items-center gap-2">
+                    <Terminal size={14} className="text-[#00f3ff]" />
+                    <span className="text-xs font-bold text-[#00f3ff] tracking-widest">COMMAND_CONSOLE_V2.0</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-[#00f3ff]/50">{consoleOpen ? "MINIMIZE" : "MAXIMIZE"}</span>
+                    {consoleOpen ? <Minimize2 size={14} className="text-[#00f3ff]" /> : <Maximize2 size={14} className="text-[#00f3ff]" />}
+                  </div>
+                </div>
 
+                {/* Console Body */}
+                {consoleOpen && (
+                  <div className="flex-1 p-0 relative bg-black/90 overflow-hidden">
+                    {/* Current Objective Overlay */}
+                    <div className="absolute top-0 right-0 p-2 bg-[#00f3ff]/5 border-b border-l border-[#00f3ff]/20 rounded-bl-lg z-10 max-w-md pointer-events-none">
+                      <div className="text-[10px] text-[#00f3ff] uppercase tracking-widest mb-1">Current Directive</div>
+                      <div className="text-xs text-slate-300 font-mono">
+                        {lessons.find(l => l.id === activeLessonId)?.description}
+                      </div>
+                    </div>
+
+                    <SQLEditor query={query} setQuery={setQuery} onRun={handleRun} />
+                  </div>
+                )}
+              </motion.div>
+            </>
+          );
+        })()}
       </div>
 
       {/* Success Modal */}
