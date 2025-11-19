@@ -1,6 +1,5 @@
-@import "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
+@import "tailwindcss";
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -25,18 +24,11 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background-color: var(--bg-dark);
-  /* Changed from #0f172a */
   color: #e0e0e0;
-  /* Added */
   font-family: 'Share Tech Mono', monospace;
-  /* Added */
-  overflow: hidden;
-  /* Added */
 }
 
 /* Custom Scrollbar */
