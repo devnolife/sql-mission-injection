@@ -13,8 +13,26 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware - Allow semua origin untuk development (akses dari IP jaringan lokal)
+// Middleware - Allow origin spesifik
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3001',
+  'https://lab-if.tech',
+  'http://lab-if.tech'
+];
+
 app.use(cors({
-  origin: true, // Izinkan semua origin
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      // Opsional: Untuk development, kita bisa allow semua jika perlu
+      // return callback(null, true); 
+      return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());

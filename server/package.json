@@ -17,6 +17,12 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "bcryptjs": "^3.0.3"
+        "bcryptjs": "^3.0.3",
+        "better-sqlite3": "^12.5.0",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "drizzle-orm": "^0.45.1",
+        "express": "^5.2.1",
+        "pg": "^8.16.3"
     }
 }

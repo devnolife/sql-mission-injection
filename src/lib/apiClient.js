@@ -1,8 +1,8 @@
 // API Client untuk berkomunikasi dengan backend
 // Menggabungkan localStorage fallback dengan API sync
 
-// Gunakan hostname yang sama dengan halaman web (untuk akses dari IP jaringan lokal)
-const API_BASE_URL = `http://${window.location.hostname}:3001/api`;
+// Gunakan relative path agar bisa di-proxy oleh Vite (dev) atau Nginx (prod)
+const API_BASE_URL = '/api';
 
 // Storage keys untuk localStorage fallback
 const STORAGE_KEYS = {
