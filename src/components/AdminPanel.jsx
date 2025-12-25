@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Users, Plus, Copy, Check, RefreshCw, Trash2, Eye,
     Trophy, BookOpen, Clock, ChevronLeft, X, User,
-    Shield, Key, Clipboard, CheckCircle, AlertCircle
+    Shield, Key, Clipboard, CheckCircle, AlertCircle, LogOut, Home
 } from 'lucide-react';
 import { getAllUsers, registerUser } from '../lib/apiClient';
 import { lessons } from '../lib/lessons';
@@ -458,6 +458,7 @@ export default function AdminPanel({ onBack }) {
                             <button
                                 onClick={fetchUsers}
                                 className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                                title="Refresh"
                             >
                                 <RefreshCw size={18} className={`text-slate-400 ${isLoading ? 'animate-spin' : ''}`} />
                             </button>
@@ -468,6 +469,13 @@ export default function AdminPanel({ onBack }) {
                                 <Plus size={18} />
                                 <span className="hidden sm:inline">Tambah User</span>
                             </button>
+                            <a
+                                href="/"
+                                className="p-2 hover:bg-red-500/20 rounded-lg transition-colors group"
+                                title="Kembali ke Login"
+                            >
+                                <LogOut size={18} className="text-slate-400 group-hover:text-red-400" />
+                            </a>
                         </div>
                     </div>
                 </div>
