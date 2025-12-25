@@ -3,10 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Users, Plus, Copy, Check, RefreshCw, Trash2, Eye,
     Trophy, BookOpen, Clock, ChevronLeft, X, User,
-    Shield, Key, Clipboard, CheckCircle, AlertCircle, LogOut, Home
+    Shield, Key, Clipboard, CheckCircle, AlertCircle, LogOut, Home, Lock
 } from 'lucide-react';
-import { getAllUsers, registerUser } from '../lib/apiClient';
+import { getAllUsers, registerUser, loginUser } from '../lib/apiClient';
 import { lessons } from '../lib/lessons';
+
+// Admin PIN untuk akses panel (bisa diubah)
+const ADMIN_PIN = 'admin123';
 
 // Generate random password
 const generatePassword = (length = 8) => {
@@ -16,6 +19,93 @@ const generatePassword = (length = 8) => {
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return password;
+};
+
+// Admin Login Component
+const AdminLogin = ({ onLogin }) => {
+    const [pin, setPin] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setError('');
+        setIsLoading(true);
+
+        setTimeout(() => {
+            if (pin === ADMIN_PIN) {
+                localStorage.setItem('admin_authenticated', 'true');
+                onLogin();
+            } else {
+                setError('PIN salah!');
+            }
+            setIsLoading(false);
+        }, 500);
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+            <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="w-full max-w-sm"
+            >
+                <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8">
+                    <div className="text-center mb-8">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-full flex items-center justify-center border border-cyan-500/30">
+                            <Shield size={28} className="text-cyan-400" />
+                        </div>
+                        <h1 className="text-xl font-bold text-white mb-1">Admin Panel</h1>
+                        <p className="text-sm text-slate-400">Masukkan PIN untuk akses</p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {error && (
+                            <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg flex items-center gap-2">
+                                <AlertCircle size={16} className="text-red-400" />
+                                <span className="text-xs text-red-400">{error}</span>
+                            </div>
+                        )}
+
+                        <div>
+                            <label className="block text-xs text-slate-400 mb-1.5">PIN Admin</label>
+                            <div className="relative">
+                                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <input
+                                    type="password"
+                                    value={pin}
+                                    onChange={(e) => setPin(e.target.value)}
+                                    placeholder="Masukkan PIN"
+                                    className="w-full bg-slate-900/50 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+                                    autoFocus
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isLoading || !pin}
+                            className="w-full py-3 bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                        >
+                            {isLoading ? (
+                                <RefreshCw size={18} className="animate-spin" />
+                            ) : (
+                                <Shield size={18} />
+                            )}
+                            {isLoading ? 'Memverifikasi...' : 'Masuk'}
+                        </button>
+                    </form>
+
+                    <div className="mt-6 text-center">
+                        <a href="/" className="text-xs text-slate-500 hover:text-cyan-400 transition-colors">
+                            ← Kembali ke Login Mahasiswa
+                        </a>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+    );
 };
 
 // Progress Bar Component
@@ -409,10 +499,18 @@ const Target = ({ size, className }) => (
 
 // Main Admin Panel Component
 export default function AdminPanel({ onBack }) {
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        return localStorage.getItem('admin_authenticated') === 'true';
+    });
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+
+    const handleLogout = () => {
+        localStorage.removeItem('admin_authenticated');
+        setIsAuthenticated(false);
+    };
 
     const fetchUsers = async () => {
         setIsLoading(true);
@@ -424,8 +522,15 @@ export default function AdminPanel({ onBack }) {
     };
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        if (isAuthenticated) {
+            fetchUsers();
+        }
+    }, [isAuthenticated]);
+
+    // Show login if not authenticated
+    if (!isAuthenticated) {
+        return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
+    }
 
     const totalPoints = users.reduce((sum, u) => sum + u.totalPoints, 0);
     const totalCompletedLessons = users.reduce((sum, u) => sum + u.completedLessons, 0);
@@ -469,13 +574,13 @@ export default function AdminPanel({ onBack }) {
                                 <Plus size={18} />
                                 <span className="hidden sm:inline">Tambah User</span>
                             </button>
-                            <a
-                                href="/"
+                            <button
+                                onClick={handleLogout}
                                 className="p-2 hover:bg-red-500/20 rounded-lg transition-colors group"
-                                title="Kembali ke Login"
+                                title="Logout Admin"
                             >
                                 <LogOut size={18} className="text-slate-400 group-hover:text-red-400" />
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
