@@ -94,29 +94,29 @@ const AdminApp = () => {
   }
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col font-sans text-gray-900">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div className="h-screen bg-slate-950 flex flex-col font-sans text-gray-100">
+      {/* Header - Dark Glassmorphism */}
+      <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-cyan-500/20 px-6 py-4 flex items-center justify-between sticky top-0 z-10 backdrop-blur-xl shadow-[0_0_30px_rgba(6,182,212,0.1)]">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <Edit3 className="w-6 h-6 text-blue-600" />
+          <div className="p-2.5 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+            <Edit3 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Kontrol Misi</h1>
-            <p className="text-sm text-gray-500">Manajer Konfigurasi Pelajaran</p>
+            <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Kontrol Misi</h1>
+            <p className="text-sm text-slate-400">Manajer Konfigurasi Pelajaran</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)]"
           >
             {copied ? <Check size={18} /> : <Copy size={18} />}
             {copied ? 'Disalin ke Papan Klip' : 'Ekspor Konfig'}
           </button>
           <button
             onClick={() => setIsAuthenticated(false)}
-            className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+            className="p-2.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg border border-transparent hover:border-red-500/30 transition-all duration-300"
             title="Keluar"
           >
             <LogOut size={20} />
@@ -125,65 +125,106 @@ const AdminApp = () => {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar List */}
-        <aside className="w-80 bg-white border-r border-gray-200 overflow-y-auto flex flex-col">
-          <div className="p-4 border-b border-gray-100">
+        {/* Sidebar List - Modern Glassmorphism Design */}
+        <aside className="w-80 bg-gradient-to-b from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-cyan-500/20 overflow-y-auto flex flex-col shadow-[inset_0_0_60px_rgba(6,182,212,0.05)]">
+          {/* Sidebar Header with Gradient */}
+          <div className="p-4 border-b border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10">
             <button
               onClick={() => {
                 setSelectedLesson(null);
                 setIsEditing(true);
               }}
-              className="w-full flex items-center justify-center gap-2 py-2 px-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-dashed border-cyan-400/50 rounded-xl text-cyan-400 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-400/10 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 group"
             >
-              <Plus size={18} />
-              Misi Baru
+              <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
+              <span className="font-semibold tracking-wide">Misi Baru</span>
             </button>
           </div>
-          <div className="flex-1 p-2 space-y-1">
-            {lessons.map((lesson) => (
+
+          {/* Mission Items List */}
+          <div className="flex-1 p-3 space-y-2 overflow-y-auto">
+            {lessons.map((lesson, index) => (
               <div
                 key={lesson.id}
                 onClick={() => {
                   setSelectedLesson(lesson);
                   setIsEditing(false);
                 }}
-                className={`p-3 rounded-lg cursor-pointer transition-all group ${selectedLesson?.id === lesson.id
-                  ? 'bg-blue-50 border-blue-200 shadow-sm'
-                  : 'hover:bg-gray-50 border border-transparent'
+                style={{ animationDelay: `${index * 50}ms` }}
+                className={`p-4 rounded-xl cursor-pointer transition-all duration-300 group relative overflow-hidden ${selectedLesson?.id === lesson.id
+                  ? 'bg-gradient-to-r from-cyan-500/20 via-purple-500/15 to-cyan-500/20 border border-cyan-400/50 shadow-[0_0_25px_rgba(6,182,212,0.2)]'
+                  : 'bg-slate-800/50 hover:bg-slate-700/50 border border-transparent hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)]'
                   }`}
               >
-                <div className="flex justify-between items-start mb-1">
-                  <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">
-                    #{lesson.id}
-                  </span>
-                  <span className="text-xs text-gray-400">{lesson.points} poin</span>
+                {/* Animated gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-lg ${selectedLesson?.id === lesson.id
+                      ? 'bg-cyan-400/30 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                      : 'bg-slate-700/80 text-cyan-400 group-hover:bg-cyan-500/20'
+                      } transition-all duration-300`}>
+                      #{lesson.id}
+                    </span>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${selectedLesson?.id === lesson.id
+                      ? 'text-purple-300 bg-purple-500/20'
+                      : 'text-slate-400 group-hover:text-purple-300'
+                      } transition-all duration-300`}>
+                      ⚡ {lesson.points} poin
+                    </span>
+                  </div>
+                  <h3 className={`font-semibold truncate mb-1 transition-colors duration-300 ${selectedLesson?.id === lesson.id
+                    ? 'text-white'
+                    : 'text-slate-200 group-hover:text-white'
+                    }`}>
+                    {lesson.title}
+                  </h3>
+                  <p className={`text-xs truncate transition-colors duration-300 ${selectedLesson?.id === lesson.id
+                    ? 'text-cyan-300/70'
+                    : 'text-slate-500 group-hover:text-cyan-400/60'
+                    }`}>
+                    {lesson.section}
+                  </p>
                 </div>
-                <h3 className="font-medium text-gray-900 truncate">{lesson.title}</h3>
-                <p className="text-xs text-gray-500 truncate">{lesson.section}</p>
+
+                {/* Active indicator line */}
+                {selectedLesson?.id === lesson.id && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-cyan-400 via-purple-400 to-cyan-400 rounded-r-full shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+                )}
               </div>
             ))}
           </div>
+
+          {/* Sidebar Footer Stats */}
+          <div className="p-4 border-t border-cyan-500/20 bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Total Misi</span>
+              <span className="text-cyan-400 font-bold">{lessons.length}</span>
+            </div>
+          </div>
         </aside>
 
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-gray-50 p-8">
+        {/* Main Content Area - Dark Theme */}
+        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
           {isEditing || selectedLesson ? (
-            <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                <h2 className="text-lg font-semibold text-gray-900">
+            <div className="max-w-3xl mx-auto bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(6,182,212,0.1)] border border-cyan-500/20 overflow-hidden">
+              <div className="px-6 py-4 border-b border-cyan-500/20 flex justify-between items-center bg-gradient-to-r from-cyan-500/10 via-purple-500/5 to-cyan-500/10">
+                <h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
                   {isEditing ? (selectedLesson ? 'Edit Misi' : 'Buat Misi Baru') : 'Detail Misi'}
                 </h2>
                 {!isEditing && (
                   <div className="flex gap-2">
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded border border-blue-200 transition-colors"
+                      className="px-4 py-1.5 text-sm font-medium text-cyan-400 hover:bg-cyan-500/20 rounded-lg border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDeleteLesson(selectedLesson.id)}
-                      className="px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors"
+                      className="px-4 py-1.5 text-sm font-medium text-red-400 hover:bg-red-500/20 rounded-lg border border-red-500/30 hover:border-red-400 transition-all duration-300"
                     >
                       Hapus
                     </button>
@@ -195,85 +236,90 @@ const AdminApp = () => {
                 <form onSubmit={handleSaveLesson} className="p-6 space-y-6">
                   <div className="grid grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Judul Misi</label>
+                      <label className="block text-sm font-medium text-cyan-400 mb-2">Judul Misi</label>
                       <input
                         name="title"
                         defaultValue={selectedLesson?.title}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        className="w-full px-4 py-3 bg-slate-900/80 text-slate-200 border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 outline-none transition-all placeholder-slate-500"
+                        placeholder="Masukkan judul misi..."
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Bagian / Kategori</label>
+                      <label className="block text-sm font-medium text-cyan-400 mb-2">Bagian / Kategori</label>
                       <input
                         name="section"
                         defaultValue={selectedLesson?.section}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        className="w-full px-4 py-3 bg-slate-900/80 text-slate-200 border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 outline-none transition-all placeholder-slate-500"
+                        placeholder="Contoh: SELECT Basics"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi (Singkat)</label>
+                    <label className="block text-sm font-medium text-cyan-400 mb-2">Deskripsi (Singkat)</label>
                     <input
                       name="description"
                       defaultValue={selectedLesson?.description}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-4 py-3 bg-slate-900/80 text-slate-200 border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 outline-none transition-all placeholder-slate-500"
+                      placeholder="Deskripsi singkat tentang misi..."
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Pengarahan Misi (Teks Lengkap)</label>
+                    <label className="block text-sm font-medium text-cyan-400 mb-2">Pengarahan Misi (Teks Lengkap)</label>
                     <textarea
                       name="briefing"
                       defaultValue={selectedLesson?.briefing}
                       required
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-mono text-sm"
+                      className="w-full px-4 py-3 bg-slate-900/80 text-slate-200 border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 outline-none transition-all font-mono text-sm placeholder-slate-500"
+                      placeholder="Instruksi lengkap untuk misi..."
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Query Solusi</label>
+                    <label className="block text-sm font-medium text-cyan-400 mb-2">Query Solusi</label>
                     <div className="relative">
                       <textarea
                         name="query"
                         defaultValue={selectedLesson?.query}
                         required
                         rows={3}
-                        className="w-full px-3 py-2 bg-gray-900 text-green-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-mono text-sm"
+                        className="w-full px-4 py-3 bg-slate-950 text-green-400 border border-cyan-500/30 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 outline-none transition-all font-mono text-sm shadow-inner"
+                        placeholder="SELECT * FROM table_name WHERE ...;"
                       />
-                      <div className="absolute top-2 right-2 text-xs text-gray-500 pointer-events-none">SQL</div>
+                      <div className="absolute top-3 right-3 text-xs text-cyan-500 font-bold px-2 py-1 bg-cyan-500/10 rounded">SQL</div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Imbalan Poin</label>
+                    <label className="block text-sm font-medium text-cyan-400 mb-2">Imbalan Poin</label>
                     <input
                       type="number"
                       name="points"
                       defaultValue={selectedLesson?.points || 10}
                       required
-                      className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-32 px-4 py-3 bg-slate-900/80 text-purple-300 border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 outline-none transition-all"
                     />
                   </div>
 
-                  <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                  <div className="flex justify-end gap-3 pt-6 border-t border-cyan-500/20">
                     <button
                       type="button"
                       onClick={() => {
                         setIsEditing(false);
                         if (!selectedLesson) setSelectedLesson(null);
                       }}
-                      className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="px-5 py-2.5 text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 rounded-xl border border-transparent hover:border-slate-600 transition-all duration-300"
                     >
                       Batal
                     </button>
                     <button
                       type="submit"
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-xl hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]"
                     >
                       <Save size={18} />
                       Simpan Misi
@@ -283,36 +329,36 @@ const AdminApp = () => {
               ) : (
                 <div className="p-6 space-y-8">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Ikhtisar Misi</h3>
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <p className="text-lg text-gray-900">{selectedLesson.description}</p>
+                    <h3 className="text-sm font-medium text-cyan-400 uppercase tracking-widest mb-3">Ikhtisar Misi</h3>
+                    <div className="bg-slate-900/80 p-5 rounded-xl border border-slate-600/30">
+                      <p className="text-lg text-slate-200">{selectedLesson.description}</p>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Data Pengarahan</h3>
-                    <div className="bg-black p-4 rounded-lg border border-gray-800 shadow-inner">
-                      <p className="font-mono text-green-500 text-sm leading-relaxed">{selectedLesson.briefing}</p>
+                    <h3 className="text-sm font-medium text-cyan-400 uppercase tracking-widest mb-3">Data Pengarahan</h3>
+                    <div className="bg-slate-950 p-5 rounded-xl border border-cyan-500/20 shadow-inner">
+                      <p className="font-mono text-green-400 text-sm leading-relaxed whitespace-pre-wrap">{selectedLesson.briefing}</p>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Solusi Target</h3>
-                    <div className="bg-gray-900 p-4 rounded-lg border border-gray-800 shadow-inner flex items-start gap-3">
-                      <FileJson className="text-blue-400 mt-1 shrink-0" size={20} />
-                      <code className="font-mono text-blue-300 text-sm break-all">{selectedLesson.query}</code>
+                    <h3 className="text-sm font-medium text-cyan-400 uppercase tracking-widest mb-3">Solusi Target</h3>
+                    <div className="bg-slate-950 p-5 rounded-xl border border-cyan-500/30 shadow-inner flex items-start gap-3">
+                      <FileJson className="text-cyan-400 mt-1 shrink-0" size={20} />
+                      <code className="font-mono text-cyan-300 text-sm break-all">{selectedLesson.query}</code>
                     </div>
                   </div>
                 </div>
               )}
             </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <Edit3 size={40} className="text-gray-300" />
+            <div className="h-full flex flex-col items-center justify-center text-slate-400">
+              <div className="w-24 h-24 bg-gradient-to-br from-slate-800 to-slate-700 rounded-full flex items-center justify-center mb-4 border border-cyan-500/20 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
+                <Edit3 size={40} className="text-cyan-500/50" />
               </div>
-              <p className="text-lg font-medium text-gray-500">Pilih misi untuk diedit</p>
-              <p className="text-sm">atau buat yang baru untuk memperluas kampanye</p>
+              <p className="text-lg font-medium text-slate-300">Pilih misi untuk diedit</p>
+              <p className="text-sm text-slate-500">atau buat yang baru untuk memperluas kampanye</p>
             </div>
           )}
         </main>

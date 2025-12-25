@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Database, Terminal, Shield, Cpu, Lock, ChevronRight } from 'lucide-react';
+import { Database, Terminal, Shield, Cpu, Lock, ChevronRight, Play, Trash2, AlertCircle } from 'lucide-react';
+import { hasExistingProgress, getProgressSummary, resetAllProgress } from '../lib/progressStore';
+import { loginUser } from '../lib/apiClient';
 import loginBg from '../assets/login-bg.png';
 import projectLogo from '../assets/project-logo.png';
 
@@ -17,7 +19,17 @@ const GlitchText = ({ text }) => {
 export default function LoginPage({ onLogin }) {
   const [isLoading, setIsLoading] = useState(false);
   const [bootSequence, setBootSequence] = useState([]);
-  const [username, setUsername] = useState('GUEST_USER');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [savedProgress, setSavedProgress] = useState(null);
+
+  // Check for existing progress on mount
+  useEffect(() => {
+    if (hasExistingProgress()) {
+      setSavedProgress(getProgressSummary());
+    }
+  }, []);
 
   useEffect(() => {
     const sequence = [
@@ -40,14 +52,41 @@ export default function LoginPage({ onLogin }) {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
+
+    if (!username.trim()) {
+      setErrorMessage('Username diperlukan');
+      return;
+    }
+    if (!password.trim()) {
+      setErrorMessage('Password diperlukan');
+      return;
+    }
+
     setIsLoading(true);
-    // Simulate network delay
-    setTimeout(() => {
+
+    try {
+      const result = await loginUser(username.trim(), password);
+
+      if (result.success) {
+        onLogin(result.user);
+      } else {
+        setErrorMessage(result.error || 'Login gagal');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setErrorMessage('Terjadi kesalahan. Coba lagi.');
       setIsLoading(false);
-      onLogin();
-    }, 2000);
+    }
+  };
+
+  const handleClearProgress = () => {
+    if (window.confirm('Hapus semua progress yang tersimpan?')) {
+      resetAllProgress();
+      setSavedProgress(null);
+    }
   };
 
   return (
@@ -145,13 +184,22 @@ export default function LoginPage({ onLogin }) {
                   </div>
                   <input
                     type='password'
-                    defaultValue='password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className='w-full bg-[#00f3ff]/5 border border-[#00f3ff]/30 rounded-none py-3 pl-10 pr-4 text-[#00f3ff] placeholder-[#00f3ff]/30 focus:outline-none focus:border-[#00f3ff] focus:bg-[#00f3ff]/10 transition-all font-mono'
                     placeholder='MASUKKAN_KUNCI'
                   />
                 </div>
               </div>
             </div>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <div className='p-3 bg-red-500/20 border border-red-500/50 rounded flex items-center gap-2'>
+                <AlertCircle size={16} className='text-red-400' />
+                <span className='text-xs text-red-400 font-mono'>{errorMessage}</span>
+              </div>
+            )}
 
             <div className='h-20 overflow-hidden text-xs text-[#00ff41] font-mono p-2 bg-black/50 border border-[#00ff41]/20'>
               {bootSequence.map((line, i) => (
@@ -167,11 +215,40 @@ export default function LoginPage({ onLogin }) {
               className='w-full bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-bold py-3 uppercase tracking-widest hover:shadow-[0_0_20px_rgba(0,243,255,0.4)] transition-all flex items-center justify-center gap-2 group relative overflow-hidden'
             >
               <span className='relative z-10 flex items-center gap-2'>
-                {isLoading ? 'MENGAKSES...' : 'MULAI_TAUTAN'}
+                {isLoading ? 'MENGAKSES...' : savedProgress ? 'LANJUTKAN_MISI' : 'MULAI_TAUTAN'}
                 {!isLoading && <ChevronRight size={16} className='group-hover:translate-x-1 transition-transform' />}
               </span>
               <div className='absolute inset-0 bg-[#00f3ff] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 opacity-10'></div>
             </motion.button>
+
+            {/* Saved Progress Info */}
+            {savedProgress && (
+              <div className='mt-4 p-3 bg-[#00ff41]/10 border border-[#00ff41]/30 rounded'>
+                <div className='flex items-center justify-between mb-2'>
+                  <span className='text-xs text-[#00ff41] font-bold'>PROGRESS TERSIMPAN</span>
+                  <button
+                    onClick={handleClearProgress}
+                    className='text-[10px] text-red-400 hover:text-red-300 flex items-center gap-1'
+                  >
+                    <Trash2 size={10} />
+                    Hapus
+                  </button>
+                </div>
+                <div className='grid grid-cols-2 gap-2 text-[10px]'>
+                  <div>
+                    <span className='text-gray-500'>Misi Selesai:</span>
+                    <span className='text-[#00f3ff] ml-1'>{savedProgress.completedCount}</span>
+                  </div>
+                  <div>
+                    <span className='text-gray-500'>Total XP:</span>
+                    <span className='text-[#ff00ff] ml-1'>{savedProgress.totalPoints}</span>
+                  </div>
+                </div>
+                <div className='text-[9px] text-gray-500 mt-2'>
+                  Terakhir: {savedProgress.lastPlayedText}
+                </div>
+              </div>
+            )}
           </form>
         </div>
 

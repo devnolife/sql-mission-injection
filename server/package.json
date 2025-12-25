@@ -1,0 +1,22 @@
+{
+    "name": "sql-mission-server",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Backend API untuk SQL Mission learning app",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node --watch index.js"
+    },
+    "keywords": [
+        "sql",
+        "learning",
+        "drizzle",
+        "orm"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^3.0.3"
+    }
+}
