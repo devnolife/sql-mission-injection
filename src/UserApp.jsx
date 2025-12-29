@@ -9,6 +9,7 @@ import ConceptModule from './components/ConceptModule';
 import SQLExecutionOrder from './components/SQLExecutionOrder';
 import SQLFeedback from './components/SQLFeedback';
 import QueryMission from './components/QueryMission';
+import HintButton from './components/HintButton';
 import { initialData, executeQuery } from './lib/sqlEngine';
 import { lessons } from './lib/lessons';
 import { analyzeQuery } from './lib/sqlFeedback';
@@ -85,6 +86,9 @@ function App() {
   const [queryFeedback, setQueryFeedback] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showDemoPhase, setShowDemoPhase] = useState(true); // For query lessons with demo
+
+  // Hint System State
+  const [usedHints, setUsedHints] = useState({});  // { lessonId: [hints used] }
 
   // User Profile State
   const [userProfile, setUserProfile] = useState(null);
@@ -248,6 +252,36 @@ function App() {
     }
 
     setIsProcessing(false);
+  };
+
+  // Handle hint usage
+  const handleUseHint = (hint) => {
+    const currentLesson = lessons.find(l => l.id === activeLessonId);
+    if (!currentLesson) return;
+
+    // Check if user has enough points
+    if (userPoints < hint.penalty) {
+      toast.error(`Tidak cukup poin! Butuh ${hint.penalty} XP untuk hint ini.`);
+      return;
+    }
+
+    // Deduct points
+    const newPoints = userPoints - hint.penalty;
+    setUserPoints(newPoints);
+
+    // Track hint usage for this lesson
+    const lessonHints = usedHints[currentLesson.id] || [];
+    setUsedHints({
+      ...usedHints,
+      [currentLesson.id]: [...lessonHints, hint]
+    });
+
+    // Save to backend if online
+    saveProgressAPI({
+      completedLessons: Array.from(completedLessons),
+      userPoints: newPoints,
+      activeLessonId
+    }).catch(err => console.error('Error saving hint usage:', err));
   };
 
   const completeLesson = async (lesson) => {
@@ -675,6 +709,24 @@ function App() {
                         {lessons.find(l => l.id === activeLessonId)?.description}
                       </div>
                     </div>
+
+                    {/* Hint Button Overlay */}
+                    {(() => {
+                      const currentLesson = lessons.find(l => l.id === activeLessonId);
+                      if (currentLesson && currentLesson.type === 'query' && currentLesson.hints && currentLesson.hints.length > 0 && !showDemoPhase) {
+                        return (
+                          <div className="absolute top-2 left-2 z-10 pointer-events-auto">
+                            <HintButton
+                              hints={currentLesson.hints}
+                              userPoints={userPoints}
+                              onUseHint={handleUseHint}
+                              usedHints={usedHints[currentLesson.id] || []}
+                            />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
 
                     <SQLEditor query={query} setQuery={setQuery} onRun={handleRun} isProcessing={isProcessing} />
                   </div>

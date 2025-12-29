@@ -159,7 +159,24 @@ export const lessons = [
       description: "Contoh: Mengambil hanya nama dan harga dari products",
       exampleQuery: "SELECT name, price FROM products",
       tableName: "products"
-    }
+    },
+    hints: [
+      {
+        level: 1,
+        text: "Untuk memilih kolom tertentu, sebutkan nama kolom yang diinginkan setelah SELECT, dipisah koma.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan SELECT name, job FROM users - kolom yang diminta adalah 'name' dan 'job'.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT name, job FROM users",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 10,
@@ -194,7 +211,24 @@ export const lessons = [
       description: "Contoh: Filter products dengan harga >= 1000000",
       exampleQuery: "SELECT * FROM products WHERE price >= 1000000",
       tableName: "products"
-    }
+    },
+    hints: [
+      {
+        level: 1,
+        text: "Gunakan klausa WHERE untuk memfilter data. Operator >= berarti 'lebih besar atau sama dengan'.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Tambahkan WHERE age >= 25 setelah FROM users untuk memfilter berdasarkan usia.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM users WHERE age >= 25",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 12,
@@ -225,7 +259,24 @@ export const lessons = [
       description: "Contoh: Filter products dengan kategori 'Electronics'",
       exampleQuery: "SELECT * FROM products WHERE category = 'Electronics'",
       tableName: "products"
-    }
+    },
+    hints: [
+      {
+        level: 1,
+        text: "Filter data teks menggunakan WHERE dengan operator = (sama dengan). Teks harus diapit tanda kutip.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan WHERE job = 'Engineer' untuk memfilter berdasarkan pekerjaan. Perhatikan huruf besar/kecil!",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM users WHERE job = 'Engineer'",
+        penalty: 15
+      }
+    ]
   },
 
   // ==================== SECTION 2: MANIPULASI DATA (ORDER & LIMIT) ====================
@@ -257,7 +308,24 @@ export const lessons = [
     description: "Daftar semua pengguna diurutkan berdasarkan usia menaik.",
     briefing: "DATA INI BERANTAKAN. ORGANISASIKAN. URUTKAN TARGET BERDASARKAN USIA, DARI YANG TERMUDA HINGGA TERTUA.",
     query: "SELECT * FROM users ORDER BY age ASC",
-    points: 30
+    points: 30,
+    hints: [
+      {
+        level: 1,
+        text: "Gunakan ORDER BY untuk mengurutkan hasil. ASC berarti ascending (naik: kecil → besar).",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Tambahkan ORDER BY age ASC di akhir query untuk mengurutkan dari termuda ke tertua.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM users ORDER BY age ASC",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 16,
@@ -267,7 +335,24 @@ export const lessons = [
     description: "Ambil 3 pengguna dengan id tertinggi (pendaftaran terbaru).",
     briefing: "KITA BUTUH REKRUTAN TERBARU. AMBIL 3 ENTRI TERAKHIR YANG DITAMBAHKAN KE SISTEM.",
     query: "SELECT * FROM users ORDER BY id DESC LIMIT 3",
-    points: 35
+    points: 35,
+    hints: [
+      {
+        level: 1,
+        text: "Kombinasikan ORDER BY dengan LIMIT. DESC = descending (turun: besar → kecil), LIMIT membatasi jumlah hasil.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Urutkan by id DESC untuk mendapat id tertinggi di atas, lalu LIMIT 3 untuk ambil 3 teratas.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM users ORDER BY id DESC LIMIT 3",
+        penalty: 15
+      }
+    ]
   },
 
   // ==================== SECTION 3: FUNGSI AGREGASI ====================
@@ -300,7 +385,24 @@ export const lessons = [
     description: "Hitung jumlah total pengguna.",
     briefing: "LAPORAN SITREP DIMINTA. BERAPA BANYAK TOTAL TARGET YANG KITA HADAPI? BERIKAN SAYA JUMLAH KEPALA.",
     query: "SELECT COUNT(*) FROM users",
-    points: 40
+    points: 40,
+    hints: [
+      {
+        level: 1,
+        text: "Fungsi COUNT(*) digunakan untuk menghitung jumlah total baris dalam tabel.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan SELECT COUNT(*) FROM users untuk menghitung semua pengguna.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT COUNT(*) FROM users",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 19,
@@ -310,7 +412,24 @@ export const lessons = [
     description: "Hitung usia rata-rata semua pengguna.",
     briefing: "PROFILING SEDANG BERLANGSUNG. TENTUKAN USIA RATA-RATA BASIS PENGGUNA UNTUK MENYESUAIKAN PROTOKOL.",
     query: "SELECT AVG(age) FROM users",
-    points: 45
+    points: 45,
+    hints: [
+      {
+        level: 1,
+        text: "Fungsi AVG(kolom) menghitung nilai rata-rata dari kolom numerik.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan AVG(age) untuk menghitung rata-rata usia pengguna.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT AVG(age) FROM users",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 20,
@@ -320,7 +439,24 @@ export const lessons = [
     description: "Temukan gaji tertinggi di antara pengguna.",
     briefing: "KITA PERLU MENGIDENTIFIKASI TARGET BERNILAI TINGGI. TEMUKAN SIAPA YANG MEMILIKI GAJI TERTINGGI.",
     query: "SELECT MAX(salary) FROM users",
-    points: 35
+    points: 35,
+    hints: [
+      {
+        level: 1,
+        text: "Fungsi MAX(kolom) mencari nilai terbesar/tertinggi dari kolom numerik.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan MAX(salary) untuk menemukan gaji tertinggi.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT MAX(salary) FROM users",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 21,
@@ -330,7 +466,24 @@ export const lessons = [
     description: "Temukan produk dengan harga terendah.",
     briefing: "OPTIMISASI BIAYA DIPERLUKAN. IDENTIFIKASI PRODUK TERMURAH DALAM INVENTARIS.",
     query: "SELECT MIN(price) FROM products",
-    points: 35
+    points: 35,
+    hints: [
+      {
+        level: 1,
+        text: "Fungsi MIN(kolom) mencari nilai terkecil/terendah dari kolom numerik.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan MIN(price) pada tabel products untuk menemukan harga terendah.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT MIN(price) FROM products",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 22,
@@ -340,7 +493,24 @@ export const lessons = [
     description: "Hitung total harga semua produk.",
     briefing: "KALKULASI ASET DIMINTA. BERAPA TOTAL NILAI SEMUA PRODUK DALAM SISTEM?",
     query: "SELECT SUM(price) FROM products",
-    points: 40
+    points: 40,
+    hints: [
+      {
+        level: 1,
+        text: "Fungsi SUM(kolom) menjumlahkan semua nilai dalam kolom numerik.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Gunakan SUM(price) pada tabel products untuk menjumlahkan total harga.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT SUM(price) FROM products",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 23,
@@ -388,7 +558,24 @@ export const lessons = [
     description: "Hitung jumlah pengguna berdasarkan pekerjaan.",
     briefing: "ANALISIS TENAGA KERJA DIPERLUKAN. KELOMPOKKAN PERSONEL BERDASARKAN JENIS PEKERJAAN DAN HITUNG MASING-MASING.",
     query: "SELECT job, COUNT(*) FROM users GROUP BY job",
-    points: 50
+    points: 50,
+    hints: [
+      {
+        level: 1,
+        text: "GROUP BY mengelompokkan data berdasarkan nilai yang sama, lalu agregasi dihitung per grup.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Pilih kolom job dan COUNT(*), lalu gunakan GROUP BY job untuk mengelompokkan.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT job, COUNT(*) FROM users GROUP BY job",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 26,
@@ -398,7 +585,24 @@ export const lessons = [
     description: "Hitung total gaji per departemen.",
     briefing: "AUDIT KEUANGAN DIMINTA. HITUNG TOTAL PENGELUARAN GAJI UNTUK SETIAP DEPARTEMEN.",
     query: "SELECT department, SUM(salary) FROM users GROUP BY department",
-    points: 55
+    points: 55,
+    hints: [
+      {
+        level: 1,
+        text: "Kombinasikan GROUP BY dengan fungsi agregasi SUM untuk menjumlahkan per grup.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Pilih department dan SUM(salary), lalu GROUP BY department.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT department, SUM(salary) FROM users GROUP BY department",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 27,
@@ -408,7 +612,24 @@ export const lessons = [
     description: "Hitung gaji rata-rata per departemen.",
     briefing: "BANDINGKAN KOMPENSASI ANTAR DIVISI. TEMUKAN RATA-RATA GAJI UNTUK SETIAP DEPARTEMEN.",
     query: "SELECT department, AVG(salary) FROM users GROUP BY department",
-    points: 55
+    points: 55,
+    hints: [
+      {
+        level: 1,
+        text: "GROUP BY + AVG menghitung rata-rata untuk setiap grup/departemen.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Pilih department dan AVG(salary), lalu GROUP BY department.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT department, AVG(salary) FROM users GROUP BY department",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 28,
@@ -456,7 +677,24 @@ export const lessons = [
     description: "Temukan departemen dengan lebih dari 2 karyawan.",
     briefing: "IDENTIFIKASI DIVISI UTAMA. TEMUKAN DEPARTEMEN MANA YANG MEMILIKI LEBIH DARI 2 PERSONEL.",
     query: "SELECT department, COUNT(*) FROM users GROUP BY department HAVING COUNT(*) > 2",
-    points: 60
+    points: 60,
+    hints: [
+      {
+        level: 1,
+        text: "HAVING digunakan untuk memfilter hasil SETELAH GROUP BY, berbeda dengan WHERE yang filter sebelum GROUP BY.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "GROUP BY department terlebih dahulu, lalu tambahkan HAVING COUNT(*) > 2 untuk filter grup yang > 2.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT department, COUNT(*) FROM users GROUP BY department HAVING COUNT(*) > 2",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 31,
@@ -504,7 +742,24 @@ export const lessons = [
     description: "Temukan semua pesanan yang dibuat oleh 'Alice'.",
     briefing: "TARGET 'ALICE' ADALAH ORANG YANG DIMINATI. REFERENSI SILANG REGISTRI PENGGUNA DENGAN LOG PESANAN. TEMUKAN SEMUA YANG DIA BELI.",
     query: "SELECT * FROM orders JOIN users ON orders.user_id = users.id WHERE users.name = 'Alice'",
-    points: 60
+    points: 60,
+    hints: [
+      {
+        level: 1,
+        text: "JOIN menghubungkan dua tabel. Gunakan ON untuk menentukan kolom yang saling terkait. Tambahkan WHERE untuk filter nama.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "JOIN orders dengan users ON orders.user_id = users.id, lalu WHERE users.name = 'Alice'.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM orders JOIN users ON orders.user_id = users.id WHERE users.name = 'Alice'",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 34,
@@ -514,7 +769,24 @@ export const lessons = [
     description: "Temukan pengguna yang telah memesan 'Laptop'. (Gunakan Subquery)",
     briefing: "KITA MENCARI PEMBELI TEKNOLOGI. IDENTIFIKASI PENGGUNA MANA PUN YANG TELAH MEMBELI 'LAPTOP'. GUNAKAN SUBQUERY UNTUK MEMFILTER ID.",
     query: "SELECT * FROM users WHERE id IN (SELECT user_id FROM orders WHERE product_id = 101)",
-    points: 75
+    points: 75,
+    hints: [
+      {
+        level: 1,
+        text: "SUBQUERY adalah query di dalam query. Gunakan WHERE id IN (subquery) untuk filter berdasarkan hasil subquery.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "WHERE id IN (SELECT user_id FROM orders WHERE product_id = 101) - product_id 101 adalah Laptop.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM users WHERE id IN (SELECT user_id FROM orders WHERE product_id = 101)",
+        penalty: 15
+      }
+    ]
   },
 
   // ==================== SECTION 7: INSERT ====================
@@ -546,7 +818,24 @@ export const lessons = [
     description: "Tambahkan pengguna baru bernama 'Neo' berusia 32 dengan pekerjaan 'Hacker'.",
     briefing: "REKRUT BARU BERGABUNG. MASUKKAN PROFIL AGEN 'NEO' KE DALAM SISTEM. USIA 32, SPESIALISASI: HACKER.",
     query: "INSERT INTO users (name, age, job) VALUES ('Neo', 32, 'Hacker')",
-    points: 50
+    points: 50,
+    hints: [
+      {
+        level: 1,
+        text: "INSERT INTO menambahkan data baru. Format: INSERT INTO tabel (kolom1, kolom2) VALUES (nilai1, nilai2).",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "INSERT INTO users (name, age, job) VALUES ('Neo', 32, 'Hacker') - teks pakai kutip, angka tidak.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: INSERT INTO users (name, age, job) VALUES ('Neo', 32, 'Hacker')",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 37,
@@ -594,7 +883,24 @@ export const lessons = [
     description: "Ubah pekerjaan Charlie menjadi 'Senior Engineer'.",
     briefing: "AGEN CHARLIE TELAH MEMBUKTIKAN KEMAMPUANNYA. UPDATE STATUSNYA MENJADI 'SENIOR ENGINEER'.",
     query: "UPDATE users SET job = 'Senior Engineer' WHERE name = 'Charlie'",
-    points: 55
+    points: 55,
+    hints: [
+      {
+        level: 1,
+        text: "UPDATE mengubah data yang ada. Format: UPDATE tabel SET kolom = nilai WHERE kondisi. Selalu gunakan WHERE!",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "UPDATE users SET job = 'Senior Engineer' WHERE name = 'Charlie' untuk mengubah job Charlie saja.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: UPDATE users SET job = 'Senior Engineer' WHERE name = 'Charlie'",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 40,
@@ -631,7 +937,24 @@ export const lessons = [
     description: "Hapus pesanan dengan status 'pending'.",
     briefing: "OPERASI PEMBERSIHAN. HAPUS SEMUA PESANAN YANG MASIH PENDING DARI SISTEM.",
     query: "DELETE FROM orders WHERE status = 'pending'",
-    points: 55
+    points: 55,
+    hints: [
+      {
+        level: 1,
+        text: "DELETE menghapus data. Format: DELETE FROM tabel WHERE kondisi. PERINGATAN: Selalu gunakan WHERE agar tidak hapus semua!",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "DELETE FROM orders WHERE status = 'pending' untuk hapus hanya pesanan dengan status pending.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: DELETE FROM orders WHERE status = 'pending'",
+        penalty: 15
+      }
+    ]
   },
   {
     id: 43,
