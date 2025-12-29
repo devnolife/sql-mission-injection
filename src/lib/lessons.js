@@ -96,21 +96,6 @@ export const lessons = [
   // ==================== SECTION 1: PENGINTAIAN (SELECT) ====================
   {
     id: 7,
-    type: 'query',
-    title: "Identifikasi Target",
-    section: "Pengintaian",
-    description: "Ambil daftar lengkap pengguna dari database.",
-    briefing: "AGEN, KITA TELAH MENEMBUS PERIMETER. TUGAS PERTAMA ANDA ADALAH MENGIDENTIFIKASI SEMUA TARGET POTENSIAL DI DALAM SISTEM. EKSTRAK REGISTRI PENGGUNA LENGKAP.",
-    query: "SELECT * FROM users",
-    points: 10,
-    exampleDemo: {
-      description: "Contoh: Mengambil semua data dari tabel products",
-      exampleQuery: "SELECT * FROM products",
-      tableName: "products"
-    }
-  },
-  {
-    id: 8,
     type: 'concept',
     title: "Perintah SELECT",
     section: "Pengintaian",
@@ -130,6 +115,38 @@ export const lessons = [
     }
   },
   {
+    id: 8,
+    type: 'query',
+    title: "Identifikasi Target",
+    section: "Pengintaian",
+    description: "Ambil daftar lengkap pengguna dari database.",
+    briefing: "AGEN, KITA TELAH MENEMBUS PERIMETER. TUGAS PERTAMA ANDA ADALAH MENGIDENTIFIKASI SEMUA TARGET POTENSIAL DI DALAM SISTEM. EKSTRAK REGISTRI PENGGUNA LENGKAP.",
+    query: "SELECT * FROM users",
+    points: 10,
+    exampleDemo: {
+      description: "Contoh: Mengambil semua data dari tabel products",
+      exampleQuery: "SELECT * FROM products",
+      tableName: "products"
+    },
+    hints: [
+      {
+        level: 1,
+        text: "Gunakan perintah SELECT untuk mengambil data. Tanda * berarti 'semua kolom'.",
+        penalty: 5
+      },
+      {
+        level: 2,
+        text: "Sintaks dasarnya: SELECT * FROM nama_tabel. Tabel yang diminta adalah 'users'.",
+        penalty: 10
+      },
+      {
+        level: 3,
+        text: "Jawaban lengkap: SELECT * FROM users",
+        penalty: 15
+      }
+    ]
+  },
+  {
     id: 9,
     type: 'query',
     title: "Kolom Spesifik",
@@ -146,21 +163,6 @@ export const lessons = [
   },
   {
     id: 10,
-    type: 'query',
-    title: "Filter berdasarkan Usia",
-    section: "Pengintaian",
-    description: "Temukan semua pengguna yang berusia 25 tahun atau lebih.",
-    briefing: "KERJA BAGUS. SEKARANG KITA PERLU MEMPERSEMPIT DAFTAR. FOKUS PADA TARGET DEWASA. FILTER REGISTRI UNTUK INDIVIDU BERUSIA 25 TAHUN ATAU LEBIH.",
-    query: "SELECT * FROM users WHERE age >= 25",
-    points: 15,
-    exampleDemo: {
-      description: "Contoh: Filter products dengan harga >= 1000000",
-      exampleQuery: "SELECT * FROM products WHERE price >= 1000000",
-      tableName: "products"
-    }
-  },
-  {
-    id: 11,
     type: 'concept',
     title: "Penargetan Presisi",
     section: "Pengintaian",
@@ -177,6 +179,21 @@ export const lessons = [
         { action: "highlightRow", row: 2, description: "Charlie berusia 22 - TIDAK memenuhi kriteria" },
         { action: "runQuery", query: "SELECT * FROM users WHERE age >= 25", description: "WHERE memfilter hanya baris yang memenuhi kondisi" }
       ]
+    }
+  },
+  {
+    id: 11,
+    type: 'query',
+    title: "Filter berdasarkan Usia",
+    section: "Pengintaian",
+    description: "Temukan semua pengguna yang berusia 25 tahun atau lebih.",
+    briefing: "KERJA BAGUS. SEKARANG KITA PERLU MEMPERSEMPIT DAFTAR. FOKUS PADA TARGET DEWASA. FILTER REGISTRI UNTUK INDIVIDU BERUSIA 25 TAHUN ATAU LEBIH.",
+    query: "SELECT * FROM users WHERE age >= 25",
+    points: 15,
+    exampleDemo: {
+      description: "Contoh: Filter products dengan harga >= 1000000",
+      exampleQuery: "SELECT * FROM products WHERE price >= 1000000",
+      tableName: "products"
     }
   },
   {
@@ -214,6 +231,26 @@ export const lessons = [
   // ==================== SECTION 2: MANIPULASI DATA (ORDER & LIMIT) ====================
   {
     id: 14,
+    type: 'concept',
+    title: "Mengurutkan & Membatasi Data",
+    section: "Manipulasi Data",
+    description: "Memahami ORDER BY dan LIMIT untuk mengontrol hasil query.",
+    content: "Setelah memfilter data dengan WHERE, kita sering perlu mengurutkan hasil atau membatasi jumlah baris yang dikembalikan.\n\nORDER BY:\n• Mengurutkan hasil berdasarkan kolom tertentu\n• ASC = Ascending (naik: A-Z, 0-9) - default\n• DESC = Descending (turun: Z-A, 9-0)\n• Contoh: ORDER BY age ASC atau ORDER BY salary DESC\n\nLIMIT:\n• Membatasi jumlah baris yang dikembalikan\n• Berguna untuk paginasi atau mengambil 'Top N' hasil\n• Contoh: LIMIT 5 (ambil 5 baris pertama)\n• Sering dikombinasi dengan ORDER BY untuk hasil yang bermakna\n\nKOMBINASI:\nSELECT * FROM users ORDER BY age DESC LIMIT 3\n→ Ambil 3 pengguna tertua",
+    points: 10,
+    visualDemo: {
+      tableName: "users",
+      demoQuery: "SELECT * FROM users ORDER BY age ASC",
+      steps: [
+        { action: "showTable", description: "Tabel users dengan usia acak" },
+        { action: "highlightColumn", column: "age", description: "Kolom 'age' akan digunakan untuk sorting" },
+        { action: "highlightRow", row: 2, description: "Charlie (22) - usia paling muda" },
+        { action: "highlightRow", row: 3, description: "David (45) - usia paling tua" },
+        { action: "runQuery", query: "SELECT * FROM users ORDER BY age ASC", description: "ORDER BY age ASC mengurutkan dari termuda ke tertua" }
+      ]
+    }
+  },
+  {
+    id: 15,
     type: 'query',
     title: "Urutkan berdasarkan Usia",
     section: "Manipulasi Data",
@@ -223,7 +260,7 @@ export const lessons = [
     points: 30
   },
   {
-    id: 15,
+    id: 16,
     type: 'query',
     title: "Entri Terakhir",
     section: "Manipulasi Data",
@@ -235,7 +272,7 @@ export const lessons = [
 
   // ==================== SECTION 3: FUNGSI AGREGASI ====================
   {
-    id: 16,
+    id: 17,
     type: 'concept',
     title: "Fungsi Agregasi",
     section: "Agregasi",
@@ -256,7 +293,7 @@ export const lessons = [
     }
   },
   {
-    id: 17,
+    id: 18,
     type: 'query',
     title: "Hitung Target",
     section: "Agregasi",
@@ -266,7 +303,7 @@ export const lessons = [
     points: 40
   },
   {
-    id: 18,
+    id: 19,
     type: 'query',
     title: "Usia Rata-rata",
     section: "Agregasi",
@@ -276,7 +313,7 @@ export const lessons = [
     points: 45
   },
   {
-    id: 19,
+    id: 20,
     type: 'query',
     title: "Gaji Tertinggi",
     section: "Agregasi",
@@ -286,7 +323,7 @@ export const lessons = [
     points: 35
   },
   {
-    id: 20,
+    id: 21,
     type: 'query',
     title: "Harga Minimum",
     section: "Agregasi",
@@ -296,7 +333,7 @@ export const lessons = [
     points: 35
   },
   {
-    id: 21,
+    id: 22,
     type: 'query',
     title: "Total Nilai Stok",
     section: "Agregasi",
@@ -306,7 +343,7 @@ export const lessons = [
     points: 40
   },
   {
-    id: 22,
+    id: 23,
     type: 'quiz',
     title: "Cek Protokol: Agregasi",
     section: "Agregasi",
@@ -324,7 +361,7 @@ export const lessons = [
 
   // ==================== SECTION 4: GROUP BY ====================
   {
-    id: 23,
+    id: 24,
     type: 'concept',
     title: "Pengelompokan Data",
     section: "Group By",
@@ -344,7 +381,7 @@ export const lessons = [
     }
   },
   {
-    id: 24,
+    id: 25,
     type: 'query',
     title: "Grup Pekerjaan",
     section: "Group By",
@@ -354,7 +391,7 @@ export const lessons = [
     points: 50
   },
   {
-    id: 25,
+    id: 26,
     type: 'query',
     title: "Departemen & Gaji",
     section: "Group By",
@@ -364,7 +401,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 26,
+    id: 27,
     type: 'query',
     title: "Rata-rata Gaji Departemen",
     section: "Group By",
@@ -374,7 +411,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 27,
+    id: 28,
     type: 'quiz',
     title: "Cek Protokol: GROUP BY",
     section: "Group By",
@@ -392,7 +429,7 @@ export const lessons = [
 
   // ==================== SECTION 5: HAVING ====================
   {
-    id: 28,
+    id: 29,
     type: 'concept',
     title: "Filter Setelah Grup",
     section: "Having",
@@ -412,7 +449,7 @@ export const lessons = [
     }
   },
   {
-    id: 29,
+    id: 30,
     type: 'query',
     title: "Departemen Besar",
     section: "Having",
@@ -422,7 +459,7 @@ export const lessons = [
     points: 60
   },
   {
-    id: 30,
+    id: 31,
     type: 'quiz',
     title: "Cek Protokol: HAVING",
     section: "Having",
@@ -440,7 +477,7 @@ export const lessons = [
 
   // ==================== SECTION 6: JOIN ====================
   {
-    id: 31,
+    id: 32,
     type: 'concept',
     title: "Menggabungkan Tabel",
     section: "Deep Dive",
@@ -460,7 +497,7 @@ export const lessons = [
     }
   },
   {
-    id: 32,
+    id: 33,
     type: 'query',
     title: "Riwayat Pesanan Alice",
     section: "Deep Dive",
@@ -470,7 +507,7 @@ export const lessons = [
     points: 60
   },
   {
-    id: 33,
+    id: 34,
     type: 'query',
     title: "Target Bernilai Tinggi",
     section: "Deep Dive",
@@ -482,7 +519,7 @@ export const lessons = [
 
   // ==================== SECTION 7: INSERT ====================
   {
-    id: 34,
+    id: 35,
     type: 'concept',
     title: "Menambah Data Baru",
     section: "Modifikasi Data",
@@ -502,7 +539,7 @@ export const lessons = [
     }
   },
   {
-    id: 35,
+    id: 36,
     type: 'query',
     title: "Rekrut Agen Baru",
     section: "Modifikasi Data",
@@ -512,7 +549,7 @@ export const lessons = [
     points: 50
   },
   {
-    id: 36,
+    id: 37,
     type: 'quiz',
     title: "Cek Protokol: INSERT",
     section: "Modifikasi Data",
@@ -530,7 +567,7 @@ export const lessons = [
 
   // ==================== SECTION 8: UPDATE ====================
   {
-    id: 37,
+    id: 38,
     type: 'concept',
     title: "Mengubah Data",
     section: "Modifikasi Data",
@@ -550,7 +587,7 @@ export const lessons = [
     }
   },
   {
-    id: 38,
+    id: 39,
     type: 'query',
     title: "Promosi Charlie",
     section: "Modifikasi Data",
@@ -560,7 +597,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 39,
+    id: 40,
     type: 'quiz',
     title: "Cek Protokol: UPDATE",
     section: "Modifikasi Data",
@@ -578,7 +615,7 @@ export const lessons = [
 
   // ==================== SECTION 9: DELETE ====================
   {
-    id: 40,
+    id: 41,
     type: 'concept',
     title: "Menghapus Data",
     section: "Modifikasi Data",
@@ -587,7 +624,7 @@ export const lessons = [
     points: 10
   },
   {
-    id: 41,
+    id: 42,
     type: 'query',
     title: "Hapus Pesanan Pending",
     section: "Modifikasi Data",
@@ -597,7 +634,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 42,
+    id: 43,
     type: 'quiz',
     title: "Cek Protokol: DELETE",
     section: "Modifikasi Data",
@@ -615,7 +652,7 @@ export const lessons = [
 
   // ==================== FINAL MISSION ====================
   {
-    id: 43,
+    id: 44,
     type: 'concept',
     title: "Misi Selesai",
     section: "Final",
