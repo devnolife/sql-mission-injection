@@ -102,7 +102,12 @@ export const lessons = [
     description: "Ambil daftar lengkap pengguna dari database.",
     briefing: "AGEN, KITA TELAH MENEMBUS PERIMETER. TUGAS PERTAMA ANDA ADALAH MENGIDENTIFIKASI SEMUA TARGET POTENSIAL DI DALAM SISTEM. EKSTRAK REGISTRI PENGGUNA LENGKAP.",
     query: "SELECT * FROM users",
-    points: 10
+    points: 10,
+    exampleDemo: {
+      description: "Contoh: Mengambil semua data dari tabel products",
+      exampleQuery: "SELECT * FROM products",
+      tableName: "products"
+    }
   },
   {
     id: 7,
@@ -132,7 +137,12 @@ export const lessons = [
     description: "Pilih hanya nama dan pekerjaan dari semua pengguna.",
     briefing: "BANDWIDTH TERBATAS. BERHENTI MENGUNDUH DATA SAMPAH. EKSTRAK HANYA NAMA DAN PEKERJAAN. KITA TIDAK BUTUH SISANYA.",
     query: "SELECT name, job FROM users",
-    points: 25
+    points: 25,
+    exampleDemo: {
+      description: "Contoh: Mengambil hanya nama dan harga dari products",
+      exampleQuery: "SELECT name, price FROM products",
+      tableName: "products"
+    }
   },
   {
     id: 9,
@@ -142,7 +152,12 @@ export const lessons = [
     description: "Temukan semua pengguna yang berusia 25 tahun atau lebih.",
     briefing: "KERJA BAGUS. SEKARANG KITA PERLU MEMPERSEMPIT DAFTAR. FOKUS PADA TARGET DEWASA. FILTER REGISTRI UNTUK INDIVIDU BERUSIA 25 TAHUN ATAU LEBIH.",
     query: "SELECT * FROM users WHERE age >= 25",
-    points: 15
+    points: 15,
+    exampleDemo: {
+      description: "Contoh: Filter products dengan harga >= 1000000",
+      exampleQuery: "SELECT * FROM products WHERE price >= 1000000",
+      tableName: "products"
+    }
   },
   {
     id: 10,
@@ -188,7 +203,12 @@ export const lessons = [
     description: "Temukan semua pengguna dengan pekerjaan 'Engineer'.",
     briefing: "KITA BUTUH AKSES TEKNIS. TEMUKAN PARA ENGINEER. MEREKA MEMEGANG KUNCI KE LEVEL YANG LEBIH DALAM.",
     query: "SELECT * FROM users WHERE job = 'Engineer'",
-    points: 20
+    points: 20,
+    exampleDemo: {
+      description: "Contoh: Filter products dengan kategori 'Electronics'",
+      exampleQuery: "SELECT * FROM products WHERE category = 'Electronics'",
+      tableName: "products"
+    }
   },
 
   // ==================== SECTION 2: MANIPULASI DATA (ORDER & LIMIT) ====================

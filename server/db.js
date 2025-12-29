@@ -1,7 +1,25 @@
 // Database connection setup dengan Drizzle ORM
 // Supports both SQLite and PostgreSQL
 
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import { existsSync } from 'fs';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory of this file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load .env from project root (parent of server folder)
+const projectRoot = resolve(__dirname, '..');
+const envPath = resolve(projectRoot, '.env');
+
+if (existsSync(envPath)) {
+  dotenv.config({ path: envPath, override: true });
+  console.log(`📁 Loaded .env from: ${envPath}`);
+} else {
+  console.log(`⚠️ No .env found at: ${envPath}`);
+}
 import { drizzle as drizzleSqlite } from 'drizzle-orm/better-sqlite3';
 import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
 import Database from 'better-sqlite3';
@@ -12,6 +30,7 @@ const { Pool } = pg;
 
 // Database configuration
 const DATABASE_TYPE = process.env.DATABASE_TYPE || 'sqlite';
+console.log(`🔧 DEBUG: DATABASE_TYPE = "${DATABASE_TYPE}" (env: "${process.env.DATABASE_TYPE}")`);
 
 let db;
 let dbClient;
@@ -52,9 +71,11 @@ export const setupDatabase = async () => {
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 username VARCHAR(255) NOT NULL UNIQUE,
+                password_hash TEXT NOT NULL DEFAULT '',
                 display_name VARCHAR(255),
                 avatar_url TEXT,
                 role VARCHAR(50) DEFAULT 'NETRUNNER_LVL_1',
+                is_admin BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 last_login_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
@@ -137,6 +158,18 @@ export const setupDatabase = async () => {
             CREATE INDEX IF NOT EXISTS idx_completed_lessons_user ON completed_lessons(user_id);
             CREATE INDEX IF NOT EXISTS idx_query_history_user ON query_history(user_id);
         `);
+
+    // Migration: Add is_admin column if it doesn't exist (for existing databases)
+    try {
+      const tableInfo = dbClient.prepare("PRAGMA table_info(users)").all();
+      const hasIsAdmin = tableInfo.some(col => col.name === 'is_admin');
+      if (!hasIsAdmin) {
+        dbClient.exec(`ALTER TABLE users ADD COLUMN is_admin INTEGER DEFAULT 0;`);
+        console.log('📦 Migration: Added is_admin column to users table');
+      }
+    } catch (migrationError) {
+      console.log('Migration check skipped:', migrationError.message);
+    }
   }
 
   console.log('✅ Database setup selesai!');

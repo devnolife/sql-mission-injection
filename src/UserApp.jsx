@@ -6,8 +6,11 @@ import MissionBriefing from './components/MissionBriefing';
 import QuizModule from './components/QuizModule';
 import ConceptModule from './components/ConceptModule';
 import SQLExecutionOrder from './components/SQLExecutionOrder';
+import SQLFeedback from './components/SQLFeedback';
+import QueryMission from './components/QueryMission';
 import { initialData, executeQuery } from './lib/sqlEngine';
 import { lessons } from './lib/lessons';
+import { analyzeQuery } from './lib/sqlFeedback';
 import {
   loadAllProgress,
   saveAllProgress,
@@ -27,7 +30,7 @@ import {
   checkConnection,
   logQuery,
 } from './lib/apiClient';
-import { Database, BookOpen, Terminal, LogOut, Lock, CheckCircle, Star, Trophy, Cpu, Shield, Radio, Minimize2, Maximize2, X, ChevronRight, ChevronLeft, User, RotateCcw, Save, Wifi, WifiOff } from 'lucide-react';
+import { Database, BookOpen, Terminal, LogOut, Lock, CheckCircle, Star, Trophy, Cpu, Shield, Radio, Minimize2, Maximize2, X, ChevronRight, ChevronLeft, User, RotateCcw, Save, Wifi, WifiOff, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 
@@ -76,6 +79,9 @@ function App() {
   const [showBriefing, setShowBriefing] = useState(false);
   const [progressLoaded, setProgressLoaded] = useState(false);
   const [showSaveIndicator, setShowSaveIndicator] = useState(false);
+  const [queryFeedback, setQueryFeedback] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showDemoPhase, setShowDemoPhase] = useState(true); // For query lessons with demo
 
   // User Profile State
   const [userProfile, setUserProfile] = useState(null);
@@ -159,11 +165,15 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  const handleRun = () => {
+  const handleRun = async () => {
+    setIsProcessing(true);
+
+    // Simulate processing delay for visual feedback
+    await new Promise(resolve => setTimeout(resolve, 300));
+
     const result = executeQuery(query, initialData);
     if (result.error) {
-      // Pass error to visualizer or handle it?
-      // For now, alert is okay but we might want a better UI for errors later
+      setIsProcessing(false);
       alert(result.error);
       return;
     }
@@ -179,9 +189,19 @@ function App() {
       // Normalize: remove all whitespace, lowercase, remove trailing semicolon
       const normalize = (str) => str.toLowerCase().replace(/\s+/g, '').replace(/;$/, '');
       if (normalize(query) === normalize(currentLesson.query)) {
+        setQueryFeedback(null); // Clear feedback on success
         completeLesson(currentLesson);
+      } else {
+        // Analyze incorrect query and show feedback
+        const feedback = analyzeQuery(query, currentLesson.query);
+        setQueryFeedback(feedback);
       }
+    } else {
+      // No expected query or already completed - clear feedback
+      setQueryFeedback(null);
     }
+
+    setIsProcessing(false);
   };
 
   const completeLesson = (lesson) => {
@@ -195,8 +215,10 @@ function App() {
       const nextLessonId = lesson.id + 1;
       if (lessons.find(l => l.id === nextLessonId)) {
         setActiveLessonId(nextLessonId);
-        setShowBriefing(true);
+        setShowBriefing(false); // Don't show briefing, show demo first
+        setShowDemoPhase(true); // Reset demo phase for new lesson
         setQuery(""); // Clear query for next mission
+        setQueryFeedback(null); // Clear feedback for next mission
         setTableData([]); // Clear visualizer
         setExplanation("");
       }
@@ -213,12 +235,19 @@ function App() {
     // If clicking a completed lesson, just load it without briefing
     if (completedLessons.has(lessonId)) {
       setActiveLessonId(lessonId);
+      setShowDemoPhase(false); // Skip demo for completed lessons
       // ... typing logic below
     } else {
-      // If it's the current active lesson (and not completed), show briefing
+      // If it's the current active lesson (and not completed), show demo first (if has exampleDemo)
       setActiveLessonId(lessonId);
-      setShowBriefing(true);
-      return; // Don't auto-type, let them accept mission first
+      const lesson = lessons.find(l => l.id === lessonId);
+      if (lesson?.exampleDemo) {
+        setShowDemoPhase(true); // Show demo first
+        return;
+      } else {
+        setShowBriefing(true);
+        return; // Don't auto-type, let them accept mission first
+      }
     }
 
     setIsTyping(true);
@@ -470,6 +499,18 @@ function App() {
               </div>
             );
           }
+          // Query lesson with demo phase
+          if (currentLesson?.type === 'query' && currentLesson.exampleDemo && showDemoPhase) {
+            return (
+              <QueryMission
+                lesson={currentLesson}
+                onStartChallenge={() => {
+                  setShowDemoPhase(false);
+                  setShowBriefing(true); // Show briefing after demo
+                }}
+              />
+            );
+          }
           return (
             <>
               {/* VISUALIZER (Top) */}
@@ -482,6 +523,16 @@ function App() {
                     animationState={animationState}
                     explanation={explanation}
                   />
+
+                  {/* SQL Feedback Panel */}
+                  {queryFeedback && !queryFeedback.isCorrect && (
+                    <div className="absolute bottom-4 right-4 max-w-md z-20">
+                      <SQLFeedback
+                        feedback={queryFeedback}
+                        onClose={() => setQueryFeedback(null)}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -516,7 +567,7 @@ function App() {
                       </div>
                     </div>
 
-                    <SQLEditor query={query} setQuery={setQuery} onRun={handleRun} />
+                    <SQLEditor query={query} setQuery={setQuery} onRun={handleRun} isProcessing={isProcessing} />
                   </div>
                 )}
               </motion.div>

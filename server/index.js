@@ -1,7 +1,8 @@
 // Express API Server untuk SQL Mission
 // Backend untuk menyimpan dan mengambil progress pengguna
 
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env' });
 import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';

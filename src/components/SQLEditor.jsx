@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, AlertTriangle } from 'lucide-react';
+import { Play, AlertTriangle, Loader2 } from 'lucide-react';
 import clsx from 'clsx';
 
 const KEYWORDS = ["SELECT", "FROM", "WHERE", "ORDER BY", "LIMIT", "JOIN", "INNER", "LEFT", "ON", "AND", "OR", "COUNT", "SUM", "AVG", "MAX", "MIN"];
 const TABLES = ["users", "products", "orders"];
 
-const SQLEditor = ({ query, setQuery, onRun }) => {
+const SQLEditor = ({ query, setQuery, onRun, isProcessing = false }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [activeSuggestion, setActiveSuggestion] = useState(0);
     const textareaRef = useRef(null);
@@ -123,10 +123,25 @@ const SQLEditor = ({ query, setQuery, onRun }) => {
             {/* Run Button (Floating) */}
             <button
                 onClick={onRun}
-                className="absolute bottom-4 right-6 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/50 px-6 py-2 rounded-sm flex items-center gap-2 transition-all hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] group-hover:opacity-100 opacity-80"
+                disabled={isProcessing}
+                className={clsx(
+                    "absolute bottom-4 right-6 border px-6 py-2 rounded-sm flex items-center gap-2 transition-all group-hover:opacity-100 opacity-80",
+                    isProcessing
+                        ? "bg-amber-500/20 text-amber-400 border-amber-500/50 cursor-wait"
+                        : "bg-[#00ff41]/10 hover:bg-[#00ff41]/20 text-[#00ff41] border-[#00ff41]/50 hover:shadow-[0_0_15px_rgba(0,255,65,0.3)]"
+                )}
             >
-                <Play size={16} className="fill-current" />
-                <span className="font-bold tracking-widest text-sm">EKSEKUSI</span>
+                {isProcessing ? (
+                    <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span className="font-bold tracking-widest text-sm">MEMPROSES...</span>
+                    </>
+                ) : (
+                    <>
+                        <Play size={16} className="fill-current" />
+                        <span className="font-bold tracking-widest text-sm">EKSEKUSI</span>
+                    </>
+                )}
             </button>
         </div>
     );
