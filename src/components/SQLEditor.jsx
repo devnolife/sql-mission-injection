@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
 import { Play, AlertTriangle, Loader2 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -12,8 +13,15 @@ const SQLEditor = ({ query, setQuery, onRun, isProcessing = false }) => {
 
     const handlePaste = (e) => {
         e.preventDefault();
-        // Hacker-style alert
-        alert("⚠️ PERINGATAN KEAMANAN: INPUT OTOMATIS TERDETEKSI.\n\nDiperlukan pengambilalihan manual. Fungsi Salin/Tempel telah dinonaktifkan oleh mainframe.");
+        // Hacker-style toast notification
+        toast.error('⚠️ PERINGATAN KEAMANAN: INPUT OTOMATIS TERDETEKSI.\n\nDiperlukan pengambilalihan manual. Fungsi Salin/Tempel telah dinonaktifkan oleh mainframe.', {
+            duration: 6000,
+            icon: '⚠️',
+            style: {
+                whiteSpace: 'pre-line',
+                maxWidth: '600px',
+            },
+        });
     };
 
     const handleKeyDown = (e) => {

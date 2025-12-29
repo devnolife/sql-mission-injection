@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { lessons as initialLessons } from './lib/lessons';
 import { Save, Plus, Trash2, Copy, Check, Lock, LogOut, Edit3, FileJson } from 'lucide-react';
 
@@ -16,7 +17,9 @@ const AdminApp = () => {
     if (pin === 'admin123') {
       setIsAuthenticated(true);
     } else {
-      alert('Akses Ditolak');
+      toast.error('🔒 Akses Ditolak - PIN Salah', {
+        duration: 3000,
+      });
     }
   };
 
@@ -36,8 +39,14 @@ const AdminApp = () => {
 
     if (selectedLesson) {
       setLessons(lessons.map(l => l.id === selectedLesson.id ? newLesson : l));
+      toast.success('✅ Misi berhasil diupdate!', {
+        duration: 3000,
+      });
     } else {
       setLessons([...lessons, newLesson]);
+      toast.success('✨ Misi baru berhasil dibuat!', {
+        duration: 3000,
+      });
     }
     setSelectedLesson(null);
     setIsEditing(false);
@@ -50,6 +59,9 @@ const AdminApp = () => {
         setSelectedLesson(null);
         setIsEditing(false);
       }
+      toast.success('🗑️ Misi berhasil dihapus', {
+        duration: 3000,
+      });
     }
   };
 
@@ -58,6 +70,9 @@ const AdminApp = () => {
     navigator.clipboard.writeText(data);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    toast.success('📋 Konfigurasi disalin ke clipboard!', {
+      duration: 3000,
+    });
   };
 
   if (!isAuthenticated) {

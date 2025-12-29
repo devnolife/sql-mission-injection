@@ -252,7 +252,14 @@ export default function LoginPage({ onLogin }) {
           </form>
         </div>
 
-        <div className='mt-4 text-center'>
+        <div className='mt-4 text-center space-y-2'>
+          <a
+            href="/panel"
+            className='inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors group'
+          >
+            <Shield size={12} className='group-hover:text-cyan-400' />
+            <span>Admin Panel</span>
+          </a>
           <p className='text-[10px] text-[#00f3ff]/40'>
             AKSES TIDAK SAH ADALAH KEJAHATAN FEDERAL.
             <br />

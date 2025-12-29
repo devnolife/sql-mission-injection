@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import SQLEditor from './components/SQLEditor';
 import TableVisualizer from './components/TableVisualizer';
 import LoginPage from './components/LoginPage';
@@ -214,7 +215,12 @@ function App() {
     const result = executeQuery(query, initialData);
     if (result.error) {
       setIsProcessing(false);
-      alert(result.error);
+      toast.error(result.error, {
+        duration: 5000,
+        style: {
+          maxWidth: '600px',
+        },
+      });
       return;
     }
 
