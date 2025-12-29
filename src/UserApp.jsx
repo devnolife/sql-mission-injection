@@ -29,6 +29,7 @@ import {
   resetProgress as resetProgressAPI,
   checkConnection,
   logQuery,
+  getCurrentUser,
 } from './lib/apiClient';
 import { Database, BookOpen, Terminal, LogOut, Lock, CheckCircle, Star, Trophy, Cpu, Shield, Radio, Minimize2, Maximize2, X, ChevronRight, ChevronLeft, User, RotateCcw, Save, Wifi, WifiOff, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -62,6 +63,7 @@ const Typewriter = ({ text, speed = 50, delay = 0, className }) => {
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [booting, setBooting] = useState(false);
   const [query, setQuery] = useState("SELECT * FROM users");
   const [activeTable, setActiveTable] = useState("users");
@@ -90,18 +92,10 @@ function App() {
   const [missionLogOpen, setMissionLogOpen] = useState(true);
   const [consoleOpen, setConsoleOpen] = useState(true);
 
-  // Load saved progress on mount
+  // DISABLED: Don't load from localStorage on mount
+  // Progress will be loaded from backend after user logs in
   useEffect(() => {
-    const savedProgress = loadAllProgress();
-    if (savedProgress.completedLessons.size > 0) {
-      setCompletedLessons(savedProgress.completedLessons);
-      setUserPoints(savedProgress.userPoints);
-      setActiveLessonId(savedProgress.activeLessonId);
-      if (savedProgress.userProfile) {
-        setUserProfile(savedProgress.userProfile);
-      }
-      console.log('📁 Progress dimuat:', savedProgress);
-    }
+    // Just mark as loaded, don't load from localStorage
     setProgressLoaded(true);
   }, []);
 
@@ -136,34 +130,80 @@ function App() {
     }
   };
 
+  // Logout handler
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+    setUserProfile(null);
+    setUserPoints(0);
+    setCompletedLessons(new Set());
+    setActiveLessonId(1);
+    setIsAutoScrollEnabled(true);
+
+    // Clear ALL localStorage
+    localStorage.clear(); // Clear semua data
+  };
+
+  // Load user data from localStorage on mount
   useEffect(() => {
-    if (isLoggedIn) {
+    const savedUser = getCurrentUser();
+    if (savedUser) {
+      setCurrentUser(savedUser);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Set user profile when currentUser changes
+  useEffect(() => {
+    if (currentUser) {
       setBooting(true);
-      // Fetch random hacker profile
-      fetch('https://randomuser.me/api/?inc=name,picture,login')
-        .then(res => res.json())
-        .then(data => {
-          const user = data.results[0];
-          setUserProfile({
-            name: user.login.username, // Use username for hacker feel
-            avatar: user.picture.medium,
-            role: 'NETRUNNER_LVL_1'
-          });
-        })
-        .catch(() => {
-          setUserProfile({
-            name: 'GHOST_USER',
-            avatar: null,
-            role: 'UNKNOWN'
-          });
-        });
+      setUserProfile({
+        name: currentUser.displayName || currentUser.username,
+        username: currentUser.username,
+        avatar: currentUser.avatarUrl || null,
+        role: currentUser.role || 'NETRUNNER_LVL_1',
+        isAdmin: currentUser.isAdmin || false
+      });
 
       setTimeout(() => {
         setBooting(false);
+        setBootupComplete(true);
         setShowBriefing(true); // Show first briefing after boot
-      }, 2500);
+      }, 2000);
     }
-  }, [isLoggedIn]);
+  }, [currentUser]);
+
+  // Load progress from backend after user logs in
+  useEffect(() => {
+    const loadBackendProgress = async () => {
+      if (currentUser && currentUser.id) {
+        try {
+          const result = await loadProgressAPI();
+          if (result.online && result.completedLessons) {
+            // Load from backend
+            setCompletedLessons(result.completedLessons);
+            setUserPoints(result.userPoints);
+            setActiveLessonId(result.activeLessonId);
+            console.log('📡 Progress dari backend:', result);
+          } else {
+            // Reset for new user
+            setCompletedLessons(new Set());
+            setUserPoints(0);
+            setActiveLessonId(1);
+            console.log('🆕 User baru, progress reset');
+          }
+        } catch (error) {
+          console.error('Error loading progress:', error);
+          // Reset if error
+          setCompletedLessons(new Set());
+          setUserPoints(0);
+          setActiveLessonId(1);
+        }
+      }
+    };
+
+    loadBackendProgress();
+  }, [currentUser]);
 
   const handleRun = async () => {
     setIsProcessing(true);
@@ -204,15 +244,74 @@ function App() {
     setIsProcessing(false);
   };
 
-  const completeLesson = (lesson) => {
-    setCompletedLessons(prev => new Set(prev).add(lesson.id));
-    setUserPoints(prev => prev + lesson.points);
+  const completeLesson = async (lesson) => {
+    const isAlreadyCompleted = completedLessons.has(lesson.id);
+
+    // If already completed, allow navigation but don't award points
+    if (isAlreadyCompleted) {
+      console.log(`⚠️ Lesson ${lesson.id} already completed, skipping points but allowing navigation`);
+
+      // Show brief success modal
+      setShowSuccessModal(true);
+
+      // Navigate after brief delay
+      setTimeout(() => {
+        setShowSuccessModal(false);
+
+        // If reviewing old lesson (going back), return to active lesson
+        if (lesson.id < activeLessonId) {
+          setActiveLessonId(activeLessonId);
+        } else {
+          // Otherwise, proceed to next lesson if exists
+          const nextLessonId = lesson.id + 1;
+          if (lessons.find(l => l.id === nextLessonId)) {
+            setActiveLessonId(nextLessonId);
+          }
+        }
+
+        setShowBriefing(false);
+        setShowDemoPhase(true);
+        setQuery("");
+        setQueryFeedback(null);
+        setTableData([]);
+        setExplanation("");
+      }, 1000); // Shorter delay for already completed lessons
+
+      return;
+    }
+
+    // NEW COMPLETION - Award points and sync to backend
+    const newCompletedLessons = new Set(completedLessons).add(lesson.id);
+    const newPoints = userPoints + lesson.points;
+    const nextLessonId = lesson.id + 1;
+
+    setCompletedLessons(newCompletedLessons);
+    setUserPoints(newPoints);
     setShowSuccessModal(true);
+
+    // Sync to backend database
+    try {
+      if (currentUser && currentUser.id) {
+        // Mark lesson as completed in backend
+        await completeLessonAPI(lesson.id, lesson.points);
+
+        // Save overall progress to backend
+        await saveProgressAPI(
+          newCompletedLessons,
+          newPoints,
+          lessons.find(l => l.id === nextLessonId) ? nextLessonId : activeLessonId
+        );
+
+        console.log('✅ Progress synced to database');
+      }
+    } catch (error) {
+      console.error('❌ Failed to sync progress to database:', error);
+      // Continue anyway - at least saved to localStorage
+    }
 
     // Auto-advance to next mission briefing after success modal
     setTimeout(() => {
       setShowSuccessModal(false);
-      const nextLessonId = lesson.id + 1;
       if (lessons.find(l => l.id === nextLessonId)) {
         setActiveLessonId(nextLessonId);
         setShowBriefing(false); // Don't show briefing, show demo first
@@ -268,7 +367,10 @@ function App() {
   };
 
   if (!isLoggedIn) {
-    return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
+    return <LoginPage onLogin={(userData) => {
+      setCurrentUser(userData);
+      setIsLoggedIn(true);
+    }} />;
   }
 
   if (booting) {
@@ -324,8 +426,9 @@ function App() {
             </div>
             {missionLogOpen && (
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 tracking-widest uppercase">{userProfile?.name || "TIDAK DIKETAHUI"}</span>
-                <span className="text-[10px] text-cyan-400/60 tracking-wider font-medium">{userProfile?.role || "INISIASI"}</span>
+                <span className="text-sm font-bold text-white">{userProfile?.name || "TIDAK DIKETAHUI"}</span>
+                <span className="text-[10px] text-cyan-400 font-mono">@{userProfile?.username || "unknown"}</span>
+                <span className="text-[9px] text-cyan-400/60 uppercase mt-0.5">{userProfile?.role || "INISIASI"}</span>
               </div>
             )}
           </div>
@@ -470,7 +573,7 @@ function App() {
                 Reset
               </button>
               <button
-                onClick={() => setIsLoggedIn(false)}
+                onClick={handleLogout}
                 className="flex-1 py-2.5 text-[10px] text-red-400 hover:bg-red-500/10 border border-red-500/20 hover:border-red-400/50 rounded-xl uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_10px_rgba(239,68,68,0.2)]"
               >
                 Disconnect

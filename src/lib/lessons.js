@@ -31,7 +31,7 @@ export const lessons = [
     points: 5
   },
   {
-    id: 2.5,
+    id: 3,
     type: 'execution-order',
     title: "Urutan Eksekusi SQL",
     section: "Dasar-Dasar",
@@ -40,7 +40,7 @@ export const lessons = [
     points: 15
   },
   {
-    id: 3,
+    id: 4,
     type: 'quiz',
     title: "Cek Protokol: SQL",
     section: "Dasar-Dasar",
@@ -56,7 +56,7 @@ export const lessons = [
     points: 10
   },
   {
-    id: 4,
+    id: 5,
     type: 'concept',
     title: "Database Relasional",
     section: "Dasar-Dasar",
@@ -77,7 +77,7 @@ export const lessons = [
     }
   },
   {
-    id: 5,
+    id: 6,
     type: 'quiz',
     title: "Cek Protokol: Relational DB",
     section: "Dasar-Dasar",
@@ -95,7 +95,7 @@ export const lessons = [
 
   // ==================== SECTION 1: PENGINTAIAN (SELECT) ====================
   {
-    id: 6,
+    id: 7,
     type: 'query',
     title: "Identifikasi Target",
     section: "Pengintaian",
@@ -110,7 +110,7 @@ export const lessons = [
     }
   },
   {
-    id: 7,
+    id: 8,
     type: 'concept',
     title: "Perintah SELECT",
     section: "Pengintaian",
@@ -130,7 +130,7 @@ export const lessons = [
     }
   },
   {
-    id: 8,
+    id: 9,
     type: 'query',
     title: "Kolom Spesifik",
     section: "Pengintaian",
@@ -145,7 +145,7 @@ export const lessons = [
     }
   },
   {
-    id: 9,
+    id: 10,
     type: 'query',
     title: "Filter berdasarkan Usia",
     section: "Pengintaian",
@@ -160,7 +160,7 @@ export const lessons = [
     }
   },
   {
-    id: 10,
+    id: 11,
     type: 'concept',
     title: "Penargetan Presisi",
     section: "Pengintaian",
@@ -180,7 +180,7 @@ export const lessons = [
     }
   },
   {
-    id: 11,
+    id: 12,
     type: 'quiz',
     title: "Cek Protokol: Filtering",
     section: "Pengintaian",
@@ -196,7 +196,7 @@ export const lessons = [
     points: 10
   },
   {
-    id: 12,
+    id: 13,
     type: 'query',
     title: "Lokasi Engineer",
     section: "Pengintaian",
@@ -213,7 +213,7 @@ export const lessons = [
 
   // ==================== SECTION 2: MANIPULASI DATA (ORDER & LIMIT) ====================
   {
-    id: 13,
+    id: 14,
     type: 'query',
     title: "Urutkan berdasarkan Usia",
     section: "Manipulasi Data",
@@ -223,7 +223,7 @@ export const lessons = [
     points: 30
   },
   {
-    id: 14,
+    id: 15,
     type: 'query',
     title: "Entri Terakhir",
     section: "Manipulasi Data",
@@ -235,7 +235,7 @@ export const lessons = [
 
   // ==================== SECTION 3: FUNGSI AGREGASI ====================
   {
-    id: 15,
+    id: 16,
     type: 'concept',
     title: "Fungsi Agregasi",
     section: "Agregasi",
@@ -256,7 +256,7 @@ export const lessons = [
     }
   },
   {
-    id: 16,
+    id: 17,
     type: 'query',
     title: "Hitung Target",
     section: "Agregasi",
@@ -266,7 +266,7 @@ export const lessons = [
     points: 40
   },
   {
-    id: 17,
+    id: 18,
     type: 'query',
     title: "Usia Rata-rata",
     section: "Agregasi",
@@ -276,7 +276,7 @@ export const lessons = [
     points: 45
   },
   {
-    id: 18,
+    id: 19,
     type: 'query',
     title: "Gaji Tertinggi",
     section: "Agregasi",
@@ -286,7 +286,7 @@ export const lessons = [
     points: 35
   },
   {
-    id: 19,
+    id: 20,
     type: 'query',
     title: "Harga Minimum",
     section: "Agregasi",
@@ -296,7 +296,7 @@ export const lessons = [
     points: 35
   },
   {
-    id: 20,
+    id: 21,
     type: 'query',
     title: "Total Nilai Stok",
     section: "Agregasi",
@@ -306,7 +306,7 @@ export const lessons = [
     points: 40
   },
   {
-    id: 21,
+    id: 22,
     type: 'quiz',
     title: "Cek Protokol: Agregasi",
     section: "Agregasi",
@@ -324,7 +324,7 @@ export const lessons = [
 
   // ==================== SECTION 4: GROUP BY ====================
   {
-    id: 22,
+    id: 23,
     type: 'concept',
     title: "Pengelompokan Data",
     section: "Group By",
@@ -344,7 +344,7 @@ export const lessons = [
     }
   },
   {
-    id: 23,
+    id: 24,
     type: 'query',
     title: "Grup Pekerjaan",
     section: "Group By",
@@ -354,7 +354,7 @@ export const lessons = [
     points: 50
   },
   {
-    id: 24,
+    id: 25,
     type: 'query',
     title: "Departemen & Gaji",
     section: "Group By",
@@ -364,7 +364,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 25,
+    id: 26,
     type: 'query',
     title: "Rata-rata Gaji Departemen",
     section: "Group By",
@@ -374,7 +374,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 26,
+    id: 27,
     type: 'quiz',
     title: "Cek Protokol: GROUP BY",
     section: "Group By",
@@ -392,7 +392,7 @@ export const lessons = [
 
   // ==================== SECTION 5: HAVING ====================
   {
-    id: 27,
+    id: 28,
     type: 'concept',
     title: "Filter Setelah Grup",
     section: "Having",
@@ -412,7 +412,7 @@ export const lessons = [
     }
   },
   {
-    id: 28,
+    id: 29,
     type: 'query',
     title: "Departemen Besar",
     section: "Having",
@@ -422,7 +422,7 @@ export const lessons = [
     points: 60
   },
   {
-    id: 29,
+    id: 30,
     type: 'quiz',
     title: "Cek Protokol: HAVING",
     section: "Having",
@@ -440,7 +440,7 @@ export const lessons = [
 
   // ==================== SECTION 6: JOIN ====================
   {
-    id: 30,
+    id: 31,
     type: 'concept',
     title: "Menggabungkan Tabel",
     section: "Deep Dive",
@@ -460,7 +460,7 @@ export const lessons = [
     }
   },
   {
-    id: 31,
+    id: 32,
     type: 'query',
     title: "Riwayat Pesanan Alice",
     section: "Deep Dive",
@@ -470,7 +470,7 @@ export const lessons = [
     points: 60
   },
   {
-    id: 32,
+    id: 33,
     type: 'query',
     title: "Target Bernilai Tinggi",
     section: "Deep Dive",
@@ -482,7 +482,7 @@ export const lessons = [
 
   // ==================== SECTION 7: INSERT ====================
   {
-    id: 33,
+    id: 34,
     type: 'concept',
     title: "Menambah Data Baru",
     section: "Modifikasi Data",
@@ -502,7 +502,7 @@ export const lessons = [
     }
   },
   {
-    id: 34,
+    id: 35,
     type: 'query',
     title: "Rekrut Agen Baru",
     section: "Modifikasi Data",
@@ -512,7 +512,7 @@ export const lessons = [
     points: 50
   },
   {
-    id: 35,
+    id: 36,
     type: 'quiz',
     title: "Cek Protokol: INSERT",
     section: "Modifikasi Data",
@@ -530,7 +530,7 @@ export const lessons = [
 
   // ==================== SECTION 8: UPDATE ====================
   {
-    id: 36,
+    id: 37,
     type: 'concept',
     title: "Mengubah Data",
     section: "Modifikasi Data",
@@ -550,7 +550,7 @@ export const lessons = [
     }
   },
   {
-    id: 37,
+    id: 38,
     type: 'query',
     title: "Promosi Charlie",
     section: "Modifikasi Data",
@@ -560,7 +560,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 38,
+    id: 39,
     type: 'quiz',
     title: "Cek Protokol: UPDATE",
     section: "Modifikasi Data",
@@ -578,7 +578,7 @@ export const lessons = [
 
   // ==================== SECTION 9: DELETE ====================
   {
-    id: 39,
+    id: 40,
     type: 'concept',
     title: "Menghapus Data",
     section: "Modifikasi Data",
@@ -587,7 +587,7 @@ export const lessons = [
     points: 10
   },
   {
-    id: 40,
+    id: 41,
     type: 'query',
     title: "Hapus Pesanan Pending",
     section: "Modifikasi Data",
@@ -597,7 +597,7 @@ export const lessons = [
     points: 55
   },
   {
-    id: 41,
+    id: 42,
     type: 'quiz',
     title: "Cek Protokol: DELETE",
     section: "Modifikasi Data",
@@ -615,7 +615,7 @@ export const lessons = [
 
   // ==================== FINAL MISSION ====================
   {
-    id: 42,
+    id: 43,
     type: 'concept',
     title: "Misi Selesai",
     section: "Final",

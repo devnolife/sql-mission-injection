@@ -259,14 +259,14 @@ const InteractiveTableLesson = ({ visualDemo, onComplete }) => {
             </div>
 
             {/* Description */}
-            <div className="px-4 py-3 bg-[#00f3ff]/5 border-b border-[#00f3ff]/10">
+            <div className="px-4 py-2 bg-[#00f3ff]/5 border-b border-[#00f3ff]/10">
                 <AnimatePresence mode="wait">
                     <motion.p
                         key={currentStep}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="text-sm text-[#00f3ff] font-mono"
+                        className="text-xs text-[#00f3ff] font-mono leading-tight"
                     >
                         <span className="text-[#00f3ff]/50 mr-2">[STEP {currentStep + 1}/{steps.length}]</span>
                         {currentStepData?.description || "Tekan PLAY untuk memulai demo"}
@@ -275,7 +275,7 @@ const InteractiveTableLesson = ({ visualDemo, onComplete }) => {
             </div>
 
             {/* Table Visualization */}
-            <div className="flex-1 p-6 overflow-auto">
+            <div className="flex-1 p-4 overflow-auto">
                 <div className="relative inline-block min-w-full">
                     {/* Row Label */}
                     {showRowLabel && highlightedRow !== null && (
@@ -297,7 +297,7 @@ const InteractiveTableLesson = ({ visualDemo, onComplete }) => {
                                 {columns.map((col, idx) => (
                                     <th
                                         key={col}
-                                        className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border border-[#00f3ff]/30 transition-all duration-300 ${highlightedColumn === col
+                                        className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border border-[#00f3ff]/30 transition-all duration-300 ${highlightedColumn === col
                                                 ? 'bg-emerald-500/30 text-emerald-300 border-emerald-500'
                                                 : 'bg-[#00f3ff]/10 text-[#00f3ff]'
                                             }`}
@@ -329,7 +329,7 @@ const InteractiveTableLesson = ({ visualDemo, onComplete }) => {
                                     {columns.map((col) => (
                                         <td
                                             key={col}
-                                            className={`px-4 py-3 border border-[#00f3ff]/20 transition-all duration-300 ${highlightedColumn === col
+                                            className={`px-3 py-2 border border-[#00f3ff]/20 transition-all duration-300 ${highlightedColumn === col
                                                     ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50'
                                                     : highlightedRow === rowIdx
                                                         ? 'text-purple-300 border-purple-500/50'

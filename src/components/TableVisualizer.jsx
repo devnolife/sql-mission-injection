@@ -84,17 +84,17 @@ const TableVisualizer = ({ data, tableName, columns, animationState, explanation
                             {columns.map((col, idx) => (
                                 <th
                                     key={idx}
-                                    className="p-3 text-xs font-bold text-[#00f3ff] uppercase tracking-wider border-b border-[#00f3ff]/30 whitespace-nowrap"
+                                    className="p-4 text-base font-bold text-[#00f3ff] uppercase tracking-wider border-b border-[#00f3ff]/30 whitespace-nowrap"
                                 >
                                     <div className="flex items-center gap-2">
-                                        <Columns size={12} className="opacity-50" />
+                                        <Columns size={16} className="opacity-50" />
                                         {col}
                                     </div>
                                 </th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="font-mono text-sm">
+                    <tbody className="font-mono text-base">
                         <AnimatePresence mode='wait'>
                             {data.map((row, rowIndex) => (
                                 <motion.tr
@@ -105,7 +105,7 @@ const TableVisualizer = ({ data, tableName, columns, animationState, explanation
                                     className="hover:bg-[#00f3ff]/5 transition-colors group border-b border-[#00f3ff]/10 last:border-0"
                                 >
                                     {columns.map((col, colIndex) => (
-                                        <td key={colIndex} className="p-3 text-slate-300 border-r border-[#00f3ff]/5 last:border-0">
+                                        <td key={colIndex} className="p-4 text-slate-300 border-r border-[#00f3ff]/5 last:border-0">
                                             {animationState && animationState.rowIndex === rowIndex && animationState.colIndex === colIndex ? (
                                                 <span className="bg-[#00ff41] text-black px-1 animate-pulse">
                                                     {row[col]}

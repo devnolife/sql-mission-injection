@@ -57,8 +57,8 @@ app.post('/api/users/register', async (req, res) => {
     }
 
     // Cek apakah username sudah ada
-    const existing = db.select().from(users).where(eq(users.username, username)).get();
-    if (existing) {
+    const existing = await db.select().from(users).where(eq(users.username, username));
+    if (existing.length > 0) {
       return res.status(409).json({ error: 'Username sudah digunakan' });
     }
 
@@ -66,32 +66,32 @@ app.post('/api/users/register', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
 
     // Buat user baru
-    const result = db.insert(users).values({
+    const result = await db.insert(users).values({
       username,
       passwordHash,
       displayName: displayName || username,
       isAdmin: isAdmin || false,
       createdAt: new Date(),
       lastLoginAt: new Date(),
-    }).returning().get();
+    }).returning();
 
     // Buat progress entry untuk user baru
-    db.insert(progress).values({
-      userId: result.id,
+    await db.insert(progress).values({
+      userId: result[0].id,
       totalPoints: 0,
       activeLessonId: 1,
       updatedAt: new Date(),
-    }).run();
+    });
 
     console.log(`✅ User baru dibuat: ${username}`);
 
     res.json({
       success: true,
       user: {
-        id: result.id,
-        username: result.username,
-        displayName: result.displayName,
-        isAdmin: result.isAdmin,
+        id: result[0].id,
+        username: result[0].username,
+        displayName: result[0].displayName,
+        isAdmin: result[0].isAdmin,
       }
     });
   } catch (error) {
@@ -110,11 +110,13 @@ app.post('/api/users/login', async (req, res) => {
     }
 
     // Cari user
-    const user = db.select().from(users).where(eq(users.username, username)).get();
+    const userResult = await db.select().from(users).where(eq(users.username, username));
 
-    if (!user) {
+    if (userResult.length === 0) {
       return res.status(401).json({ error: 'Username tidak ditemukan' });
     }
+
+    const user = userResult[0];
 
     // Verifikasi password
     const passwordValid = await bcrypt.compare(password, user.passwordHash);
@@ -123,10 +125,9 @@ app.post('/api/users/login', async (req, res) => {
     }
 
     // Update last login
-    db.update(users)
+    await db.update(users)
       .set({ lastLoginAt: new Date() })
-      .where(eq(users.id, user.id))
-      .run();
+      .where(eq(users.id, user.id));
 
     console.log(`🔐 Login berhasil: ${username}`);
 
@@ -150,19 +151,20 @@ app.post('/api/users/login', async (req, res) => {
 // GET - List semua users (untuk admin)
 app.get('/api/users', async (req, res) => {
   try {
-    const allUsers = db.select({
+    const allUsers = await db.select({
       id: users.id,
       username: users.username,
       displayName: users.displayName,
       isAdmin: users.isAdmin,
       createdAt: users.createdAt,
       lastLoginAt: users.lastLoginAt,
-    }).from(users).all();
+    }).from(users);
 
     // Ambil progress untuk setiap user
-    const usersWithProgress = allUsers.map(user => {
-      const userProgress = db.select().from(progress).where(eq(progress.userId, user.id)).get();
-      const completed = db.select().from(completedLessons).where(eq(completedLessons.userId, user.id)).all();
+    const usersWithProgress = await Promise.all(allUsers.map(async (user) => {
+      const userProgressResult = await db.select().from(progress).where(eq(progress.userId, user.id));
+      const userProgress = userProgressResult[0];
+      const completed = await db.select().from(completedLessons).where(eq(completedLessons.userId, user.id));
 
       return {
         ...user,
@@ -170,7 +172,7 @@ app.get('/api/users', async (req, res) => {
         completedLessons: completed.length,
         activeLessonId: userProgress?.activeLessonId || 1,
       };
-    });
+    }));
 
     res.json({ success: true, users: usersWithProgress });
   } catch (error) {
@@ -187,10 +189,11 @@ app.get('/api/progress/:userId', async (req, res) => {
     const userId = parseInt(req.params.userId);
 
     // Ambil progress
-    const userProgress = db.select().from(progress).where(eq(progress.userId, userId)).get();
+    const userProgressResult = await db.select().from(progress).where(eq(progress.userId, userId));
+    const userProgress = userProgressResult[0];
 
     // Ambil completed lessons
-    const completed = db.select().from(completedLessons).where(eq(completedLessons.userId, userId)).all();
+    const completed = await db.select().from(completedLessons).where(eq(completedLessons.userId, userId));
 
     if (!userProgress) {
       return res.status(404).json({ error: 'Progress tidak ditemukan' });
@@ -218,33 +221,31 @@ app.post('/api/progress/:userId', async (req, res) => {
     const { totalPoints, activeLessonId, completedLessonsList } = req.body;
 
     // Update progress
-    db.update(progress)
+    await db.update(progress)
       .set({
         totalPoints,
         activeLessonId,
         updatedAt: new Date(),
       })
-      .where(eq(progress.userId, userId))
-      .run();
+      .where(eq(progress.userId, userId));
 
     // Sync completed lessons jika ada
     if (completedLessonsList && Array.isArray(completedLessonsList)) {
       for (const lessonId of completedLessonsList) {
         // Check if already exists
-        const existing = db.select()
+        const existingResult = await db.select()
           .from(completedLessons)
           .where(and(
             eq(completedLessons.userId, userId),
             eq(completedLessons.lessonId, lessonId)
-          ))
-          .get();
+          ));
 
-        if (!existing) {
-          db.insert(completedLessons).values({
+        if (existingResult.length === 0) {
+          await db.insert(completedLessons).values({
             userId,
             lessonId,
             completedAt: new Date(),
-          }).run();
+          });
         }
       }
     }
@@ -264,34 +265,33 @@ app.post('/api/progress/:userId/complete/:lessonId', async (req, res) => {
     const { pointsEarned } = req.body;
 
     // Check if already completed
-    const existing = db.select()
+    const existingResult = await db.select()
       .from(completedLessons)
       .where(and(
         eq(completedLessons.userId, userId),
         eq(completedLessons.lessonId, lessonId)
-      ))
-      .get();
+      ));
 
-    if (!existing) {
+    if (existingResult.length === 0) {
       // Insert completed lesson
-      db.insert(completedLessons).values({
+      await db.insert(completedLessons).values({
         userId,
         lessonId,
         pointsEarned: pointsEarned || 0,
         completedAt: new Date(),
-      }).run();
+      });
 
       // Update total points
-      const currentProgress = db.select().from(progress).where(eq(progress.userId, userId)).get();
+      const currentProgressResult = await db.select().from(progress).where(eq(progress.userId, userId));
+      const currentProgress = currentProgressResult[0];
       if (currentProgress) {
-        db.update(progress)
+        await db.update(progress)
           .set({
             totalPoints: currentProgress.totalPoints + (pointsEarned || 0),
             activeLessonId: lessonId + 1,
             updatedAt: new Date(),
           })
-          .where(eq(progress.userId, userId))
-          .run();
+          .where(eq(progress.userId, userId));
       }
     }
 
@@ -308,17 +308,16 @@ app.delete('/api/progress/:userId', async (req, res) => {
     const userId = parseInt(req.params.userId);
 
     // Delete completed lessons
-    db.delete(completedLessons).where(eq(completedLessons.userId, userId)).run();
+    await db.delete(completedLessons).where(eq(completedLessons.userId, userId));
 
     // Reset progress
-    db.update(progress)
+    await db.update(progress)
       .set({
         totalPoints: 0,
         activeLessonId: 1,
         updatedAt: new Date(),
       })
-      .where(eq(progress.userId, userId))
-      .run();
+      .where(eq(progress.userId, userId));
 
     res.json({ success: true, message: 'Progress direset' });
   } catch (error) {
@@ -335,13 +334,13 @@ app.post('/api/queries/:userId', async (req, res) => {
     const userId = parseInt(req.params.userId);
     const { lessonId, query, isCorrect } = req.body;
 
-    db.insert(queryHistory).values({
+    await db.insert(queryHistory).values({
       userId,
       lessonId,
       query,
       isCorrect,
       executedAt: new Date(),
-    }).run();
+    });
 
     res.json({ success: true });
   } catch (error) {
@@ -360,5 +359,4 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server berjalan di http://0.0.0.0:${PORT}`);
   console.log(`📡 Akses dari jaringan lokal: http://<IP-ADDRESS>:${PORT}`);
-  console.log(`📊 Database: sql_mission.db`);
 });

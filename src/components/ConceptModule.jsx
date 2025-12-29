@@ -56,10 +56,10 @@ const ConceptModule = ({ lesson, onComplete }) => {
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-full max-w-5xl bg-black/90 border border-[#00f3ff]/30 rounded-lg backdrop-blur-sm shadow-[0_0_30px_rgba(0,243,255,0.1)] flex flex-col lg:flex-row overflow-hidden h-[650px]"
+        className="w-full max-w-7xl bg-black/90 border border-[#00f3ff]/30 rounded-lg backdrop-blur-sm shadow-[0_0_30px_rgba(0,243,255,0.1)] flex flex-col lg:flex-row overflow-hidden h-[750px]"
       >
         {/* Left Side: Content */}
-        <div className={`${showVisualDemo && hasVisualDemo ? 'hidden lg:flex lg:w-2/5' : 'w-full lg:w-1/3'} bg-[#00f3ff]/5 border-r border-[#00f3ff]/20 p-6 flex flex-col relative`}>
+        <div className={`${showVisualDemo && hasVisualDemo ? 'hidden lg:flex lg:w-1/3' : 'w-full lg:w-1/3'} bg-[#00f3ff]/5 border-r border-[#00f3ff]/20 p-6 flex flex-col relative`}>
           <div className="absolute inset-0 cyber-grid opacity-20"></div>
 
           {/* Icon and Title */}
