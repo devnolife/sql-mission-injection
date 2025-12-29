@@ -5,7 +5,7 @@ import {
     Trophy, BookOpen, Clock, ChevronLeft, X, User,
     Shield, Key, Clipboard, CheckCircle, AlertCircle, LogOut, Home, Lock
 } from 'lucide-react';
-import { getAllUsers, registerUser, loginUser } from '../lib/apiClient';
+import { getAllUsers, registerUser, loginUser, resetUserProgress, resetUserPassword } from '../lib/apiClient';
 import { lessons } from '../lib/lessons';
 
 // Admin PIN untuk akses panel (bisa diubah)
@@ -391,11 +391,57 @@ const CreateUserModal = ({ isOpen, onClose, onUserCreated }) => {
 };
 
 // User Details Modal
-const UserDetailsModal = ({ user, isOpen, onClose }) => {
+const UserDetailsModal = ({ user, isOpen, onClose, onUserUpdated }) => {
+    const [isResettingProgress, setIsResettingProgress] = useState(false);
+    const [isResettingPassword, setIsResettingPassword] = useState(false);
+    const [newPassword, setNewPassword] = useState(null);
+    const [copiedPassword, setCopiedPassword] = useState(false);
+
     if (!isOpen || !user) return null;
 
     const totalLessons = lessons.length;
     const progressPercentage = Math.round((user.completedLessons / totalLessons) * 100);
+
+    const handleResetProgress = async () => {
+        if (!window.confirm(`Yakin ingin reset progress ${user.displayName || user.username}? Ini tidak bisa dibatalkan!`)) {
+            return;
+        }
+
+        setIsResettingProgress(true);
+        const result = await resetUserProgress(user.id);
+
+        if (result.success) {
+            alert('✅ Progress berhasil direset!');
+            if (onUserUpdated) onUserUpdated();
+            onClose();
+        } else {
+            alert('❌ Gagal reset progress: ' + result.error);
+        }
+        setIsResettingProgress(false);
+    };
+
+    const handleResetPassword = async () => {
+        if (!window.confirm(`Yakin ingin reset password ${user.displayName || user.username}?`)) {
+            return;
+        }
+
+        setIsResettingPassword(true);
+        const randomPassword = generatePassword(8);
+        const result = await resetUserPassword(user.id, randomPassword);
+
+        if (result.success) {
+            setNewPassword(result.newPassword);
+        } else {
+            alert('❌ Gagal reset password: ' + result.error);
+        }
+        setIsResettingPassword(false);
+    };
+
+    const handleCopyPassword = () => {
+        navigator.clipboard.writeText(newPassword);
+        setCopiedPassword(true);
+        setTimeout(() => setCopiedPassword(false), 2000);
+    };
 
     return (
         <AnimatePresence>
@@ -475,12 +521,70 @@ const UserDetailsModal = ({ user, isOpen, onClose }) => {
                             </div>
                         </div>
 
-                        <button
-                            onClick={onClose}
-                            className="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-300 font-medium transition-colors"
-                        >
-                            Tutup
-                        </button>
+                        {/* New Password Display */}
+                        {newPassword && (
+                            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <CheckCircle size={16} className="text-emerald-400" />
+                                    <span className="text-sm font-bold text-emerald-400">Password Baru Berhasil Dibuat!</span>
+                                </div>
+                                <div className="bg-slate-900 rounded-lg p-3 mb-3">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs text-slate-400">Password:</span>
+                                        <span className="text-sm font-mono font-bold text-emerald-400">{newPassword}</span>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleCopyPassword}
+                                    className="w-full py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/50 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                                >
+                                    {copiedPassword ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} className="text-emerald-400" />}
+                                    <span className="text-sm text-emerald-400">
+                                        {copiedPassword ? 'Tersalin!' : 'Copy Password'}
+                                    </span>
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Action Buttons */}
+                        <div className="space-y-2">
+                            <button
+                                onClick={handleResetProgress}
+                                disabled={isResettingProgress}
+                                className="w-full py-3 bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/50 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                            >
+                                {isResettingProgress ? (
+                                    <RefreshCw size={18} className="animate-spin text-yellow-400" />
+                                ) : (
+                                    <RefreshCw size={18} className="text-yellow-400" />
+                                )}
+                                <span className="text-sm font-bold text-yellow-400">
+                                    {isResettingProgress ? 'Mereset...' : 'Reset Progress'}
+                                </span>
+                            </button>
+
+                            <button
+                                onClick={handleResetPassword}
+                                disabled={isResettingPassword}
+                                className="w-full py-3 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/50 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                            >
+                                {isResettingPassword ? (
+                                    <RefreshCw size={18} className="animate-spin text-purple-400" />
+                                ) : (
+                                    <Key size={18} className="text-purple-400" />
+                                )}
+                                <span className="text-sm font-bold text-purple-400">
+                                    {isResettingPassword ? 'Mereset...' : 'Reset Password'}
+                                </span>
+                            </button>
+
+                            <button
+                                onClick={onClose}
+                                className="w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-300 font-medium transition-colors"
+                            >
+                                Tutup
+                            </button>
+                        </div>
                     </div>
                 </motion.div>
             </motion.div>
@@ -675,6 +779,7 @@ export default function AdminPanel({ onBack }) {
                 user={selectedUser}
                 isOpen={!!selectedUser}
                 onClose={() => setSelectedUser(null)}
+                onUserUpdated={fetchUsers}
             />
         </div>
     );

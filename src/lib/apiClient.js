@@ -258,6 +258,50 @@ export const logQuery = async (lessonId, query, isCorrect) => {
   }
 };
 
+// ========== Admin Functions ==========
+// Reset user progress (untuk admin)
+export const resetUserProgress = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/reset-progress`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true };
+    } else {
+      return { success: false, error: data.error || 'Gagal reset progress' };
+    }
+  } catch (error) {
+    console.error('Reset user progress error:', error);
+    return { success: false, error: 'Terjadi kesalahan saat reset progress' };
+  }
+};
+
+// Reset user password (untuk admin)
+export const resetUserPassword = async (userId, newPassword) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPassword }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true, newPassword: data.newPassword };
+    } else {
+      return { success: false, error: data.error || 'Gagal reset password' };
+    }
+  } catch (error) {
+    console.error('Reset user password error:', error);
+    return { success: false, error: 'Terjadi kesalahan saat reset password' };
+  }
+};
+
 // ========== Connection Status ==========
 export const checkConnection = async () => {
   return await isServerAvailable();
@@ -273,4 +317,8 @@ export default {
   resetProgress,
   logQuery,
   checkConnection,
+  getAllUsers,
+  registerUser,
+  resetUserProgress,
+  resetUserPassword,
 };

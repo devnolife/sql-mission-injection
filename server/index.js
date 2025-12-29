@@ -349,6 +349,65 @@ app.post('/api/queries/:userId', async (req, res) => {
   }
 });
 
+// ==================== ADMIN ENDPOINTS ====================
+
+// POST - Reset user progress (admin only)
+app.post('/api/admin/users/:userId/reset-progress', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+
+    // Delete all completed lessons
+    await db.delete(completedLessons).where(eq(completedLessons.userId, userId));
+
+    // Reset progress to initial state
+    await db.update(progress)
+      .set({
+        totalPoints: 0,
+        activeLessonId: 1,
+        updatedAt: new Date(),
+      })
+      .where(eq(progress.userId, userId));
+
+    console.log(`🔄 Admin reset progress untuk user ID: ${userId}`);
+
+    res.json({ success: true, message: 'Progress berhasil direset' });
+  } catch (error) {
+    console.error('Admin reset progress error:', error);
+    res.status(500).json({ error: 'Gagal reset progress' });
+  }
+});
+
+// POST - Reset user password (admin only)
+app.post('/api/admin/users/:userId/reset-password', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const { newPassword } = req.body;
+
+    if (!newPassword || newPassword.length < 4) {
+      return res.status(400).json({ error: 'Password minimal 4 karakter' });
+    }
+
+    // Hash password baru
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+
+    // Update password user
+    await db.update(users)
+      .set({ passwordHash })
+      .where(eq(users.id, userId));
+
+    console.log(`🔑 Admin reset password untuk user ID: ${userId}`);
+
+    res.json({
+      success: true,
+      message: 'Password berhasil direset',
+      newPassword: newPassword
+    });
+  } catch (error) {
+    console.error('Admin reset password error:', error);
+    res.status(500).json({ error: 'Gagal reset password' });
+  }
+});
+
 // ==================== HEALTH CHECK ====================
 
 app.get('/api/health', (req, res) => {

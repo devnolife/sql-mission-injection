@@ -49,8 +49,7 @@ function App() {
       />
       <Routes>
         <Route path='/' element={<UserApp />} />
-        <Route path='/admin' element={<AdminApp />} />
-        <Route path='/panel' element={<AdminPanel />} />
+        <Route path='/admin' element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>
   );

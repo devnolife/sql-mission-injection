@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import SQLEditor from './components/SQLEditor';
 import TableVisualizer from './components/TableVisualizer';
@@ -64,6 +65,7 @@ const Typewriter = ({ text, speed = 50, delay = 0, className }) => {
 };
 
 function App() {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [booting, setBooting] = useState(false);
@@ -161,6 +163,15 @@ function App() {
   // Set user profile when currentUser changes
   useEffect(() => {
     if (currentUser) {
+      // Redirect admin to admin panel
+      if (currentUser.isAdmin) {
+        toast.success('🔐 Admin terdeteksi! Mengalihkan ke panel admin...');
+        setTimeout(() => {
+          navigate('/admin');
+        }, 1000);
+        return;
+      }
+
       setBooting(true);
       setUserProfile({
         name: currentUser.displayName || currentUser.username,
@@ -176,7 +187,7 @@ function App() {
         setShowBriefing(true); // Show first briefing after boot
       }, 2000);
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   // Load progress from backend after user logs in
   useEffect(() => {
@@ -715,7 +726,7 @@ function App() {
                       const currentLesson = lessons.find(l => l.id === activeLessonId);
                       if (currentLesson && currentLesson.type === 'query' && currentLesson.hints && currentLesson.hints.length > 0 && !showDemoPhase) {
                         return (
-                          <div className="absolute top-2 left-2 z-10 pointer-events-auto">
+                          <div className="absolute bottom-4 left-4 z-10 pointer-events-auto">
                             <HintButton
                               hints={currentLesson.hints}
                               userPoints={userPoints}
